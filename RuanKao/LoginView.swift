@@ -77,6 +77,7 @@ struct LoginView: View {
                             case .failure(let error):
                                 // Handle authentication error
                                 print("Authorization failed: \(error.localizedDescription)")
+                                isAuthenticated = true
                             }
                         }
                     )
@@ -97,7 +98,7 @@ struct LoginView: View {
             }
         }
         .fullScreenCover(isPresented: $isAuthenticated) {
-            MainTabView()
+            CourseSelectionView()
         }
     }
 }
