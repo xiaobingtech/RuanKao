@@ -313,7 +313,7 @@ struct StatisticItemView: View {
         .padding(16)
         .frame(maxWidth: .infinity)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(color.opacity(0.08))
         )
     }
