@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1ae336bd3592",
+        "course_id": 3,
+        "id": 38749599,
+        "seq": 1,
+        "test_id": "itpm1_202311_3_3",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的合同管理\n合同，又称为契约、协议，是平等的当事人之间设立、变更、终止民事权利义务关系的协议，是当事人协商一致的产物，是两个以上的意思表示相一致的协议。合同管理是对信息系统项目合同的订立、履行、变更、终止、违约、索赔、争议处理等进行的管理。合同管理对确保各方遵守合同条款、减少风险、提高合同执行效率非常重要。\n\n请以“论信息系统项目的合同管理”为题进行论述：\n\n1.概要叙述你参与管理过的信息系统项目 (项目的背景、项目规模、发起单位、目的、项目 内容、组织结构、项目周期、交付的成果等)，并说明你在其中承担的工作(项目背景要求本人真实经历，不得抄袭及杜撰)。\n\n2.请结合你所叙述的信息系统项目，围绕以下要点论述你对信息系统项目合同管理的认识， 并总结你的心得体会：\n(1)项目合同管理的过程及主要内容。\n(2)结合你所叙述的信息系统项目，编制一份相对应的项目合同。(列出主要的条款内容)。\n\n3.结合你所参与管理的信息系统项目，论述你进行合同管理的具体做法，并总结心得体会。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "略",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc3171757662882545170546",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:41:22 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "content-length": "1805",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "35",
+    "x-fc-request-id": "1-68c3cea2-185a6ed7-66d880b2d040",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "38.40",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

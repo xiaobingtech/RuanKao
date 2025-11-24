@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1b9f37756430",
+        "course_id": 3,
+        "id": 37658921,
+        "seq": 1,
+        "test_id": "itpm1_202505_3_2",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的不确定性绩效域\n1、概要叙述你参与管理过程的信息系统项目(项目背景、项目规模、发起单位、目的、项目内容、组织结构、项目周期、交付的成果等)，并说明你在其中承担的工作。(选择的背景要求本人真实经历，不得抄袭及杜撰)\n2、结合项目管理实际情况并围绕以下要点论述你对信息系统项目成本管理的认识：\n(1)请指出有效执行不确定性绩效域可以帮助实现哪些预期目标?\n(2)从产品或可交付物角度看，描述不确定性绩效域与其他7个绩效域都相互作用。\n(3)请根据你所描述的项目，写出项目面临的不确定性及应对方法。\n字数要求2000-3500",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "略",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc3181757662746347181957",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:39:06 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "content-length": "1266",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "36",
+    "x-fc-request-id": "1-68c3ce1a-185a6ed7-00b8efda06d8",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "37.86",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

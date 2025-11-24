@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1afc739b67c7",
+        "course_id": 3,
+        "id": 33505621,
+        "seq": 1,
+        "test_id": "itpm1_202311_3_1",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的干系人管理\n每个项目都有干系人，他们会受到项目积极或消极的影响，或者能对项目施加积极或消极的影响。有些干系人影响项目工作或成果的能力有限，但有些干系人可能对项目及其期望成果有重大影响。项目干系人管理就是对项目干系人需求、希望和期望的识别，并通过沟通上的管理来满足其需要、解决问题的过程。\n\n请以“论信息系统项目的干系人管理”为题进行论述：\n\n1.概要叙述你参与管理过的信息系统项目(项目的背景、项目规模、发起单位、目的、项目内容、组织结构、项目周期、交付的成果等)，并说明你在其中承担的工作(项目背景要求本人真实经历，不得抄袭及杜撰)。\n\n2.请结合你所叙述的信息系统项目，围绕以下要点论述你对信息系统项目干系人管理的认识：\n(1)项目干系人管理的过程，各过程的执行要点。\n(2)利用干系人参与度评估矩阵分析，详细说明你所描述项目中的所有干系人，你是如何进行分类管理的。\n\n3.结合你所参与管理的信息系统项目，论述你进行项目干系人管理的具体做法，并总结心得体会。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "略",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc31d1757662865350198255",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:41:05 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "content-length": "1794",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "37",
+    "x-fc-request-id": "1-68c3ce91-181ba6a7-0665f7c9521a",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "37.88",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

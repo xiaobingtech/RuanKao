@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b197a4bd8e7a0",
+        "course_id": 3,
+        "id": 37478312,
+        "seq": 1,
+        "test_id": "itpm1_202205_3",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题 论信息系统项目的干系人管理\n项目干系人管理是对项目干系人需求、希望和期望的识别，并通过沟通上的管理来满足其需要、解决问题的过程。\n\n请以“论信息系统项目的干系人管理”为题进行论述：\n1、概要叙述你参与管理过的信息系统项目（项目的背景、项目规模、发起单位、目的、项目内容、组织结构、项目周期、交付的成果等），并说明你在其中承担的工作（项目背景要求本人真实经历，不得抄袭及杜撰）。\n2、请结合你所叙述的信息系统项目，围绕以下要点论述你对信息系统项目干系人管理的认识：\n（1）项目干系人管理的过程\n（2）请根据你所描述的项目，说明干系人管理和沟通管理、需求管理的联系与区别;\n（3）请根据你所描述的项目，写出项目中所涉及的所有干系人，并按照权利/利益方格进行分析，给出具体干系人的管理策略。\n3、请结合你所参与管理过的信息系统项目，论述你进行项目干系人管理的具体做法，并总结心得体会。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "论文评分标准：\n论题明确提到项目背景要求本人真实经历，不得抄袭及杜撰，所以项目背景一定要真实，这是一个很重要的评分标准，其次要求写项目干系人管理的过程，要把项目干系人管理的4个主要过程（识别干系人、规划干系人管理、管理干系人、控制干系人参与）都写到，不可遗漏任何过程，这也是论文的一个评分标准。其次还要根据你所描述的项目，说明干系人管理和沟通管理、需求管理的联系与区别，所以你在论文写作的时候要说一说干系人与沟通管理和需求管理的联系与区别，干系人管理与沟通管理是密切相关，干系人管理在需求管理中起着重要作用等，这也是一个很重要的评分标准，最后还要写出项目中所涉及的所有干系人，并按照权利/利益方格进行分析，给出具体干系人的管理策略，阅卷老师就从这几个方面去看你的论文是否满足了这些要求。\n从这个论题内容来看，要求还是很多的，不过我们在考前也提到要关注一下干系人管理的论文，而且给出了权利/利益方格图片，如果看了的同学应该能更好的写好论文。",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 1,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc31e1757663060219110835",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:44:20 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "48",
+    "x-fc-request-id": "1-68c3cf54-1847e71b-d07679a9dd56",
+    "transfer-encoding": "chunked",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "38.13",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1a2e65a02c39",
+        "course_id": 3,
+        "id": 38070344,
+        "seq": 1,
+        "test_id": "itpm1_202305_3",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的风险管理\n\n项目风险管理旨在识别和管理未被项目计划及其他过程所管理的风险，如果不妥善管理，这些风险可能导致项目偏离计划，无法达成既定的项目目标。\n\n请以“论信息系统项目的风险管理”为题进行论述：\n\n1、概要叙述你参与管理过的信息系统项目(项目的背景，项目规模，发起单位，目的，项目内容，组织结构，项目周期，交付的成果等)，并说明你在其中承担的工作(项目背景要求本人真实经历，不得抄袭及杜撰)\n2、请结合你所叙述的信息系统项目，围绕以下要点论述你对信息系统项目风险管理的认识:\n(1)请根据你所描述的项目，详细述你是如何进行风险识别和风险应对的\n(2)请根据你所描述的项目，写出该项目的风险登记册，并描述风险登记册的具体内容在项目风险管理整个过程中是如何逐步完善的。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "首先要概要叙述你参与管理过的信息系统项目(项目的背景，项目规模，发起单位，目的，项目内容，组织结构，项目周期，交付的成果等)，然后论题明确提到项目背景要求本人真实经历，不得抄袭及杜撰，所以项目背景一定要真实，这是一个很重要的评分标准。\n论文要以风险管理的7个过程为论点进行论述（规划风险管理、识别风险、实施定性风险分析、实施定量风险分析、规划风险应对、实施风险应对、监督风险）。\n论文要求根据你所描述的项目，详细述你是如何进行风险识别和风险应对的，所以你要写风险识别和风险应对的方法，也要列出你识别出的具体风险以及相应的应对策略。这个作为子论题要求是很重要的评分标准。\n论文还要求写出该项目的风险登记册，并描述风险登记册的具体内容在项目风险管理整个过程中是如何逐步完善的。所以你要写出一个风险登记册，可以是文字描述，也可以表格形式；这也是一个很重要的评分标准，阅卷老师就从这几个方面去看你的论文是否满足了这些要求。",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cd39a1757663011503181389",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:43:31 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "50",
+    "x-fc-request-id": "1-68c3cf23-188f8481-477fc7496dfd",
+    "transfer-encoding": "chunked",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "37.78",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

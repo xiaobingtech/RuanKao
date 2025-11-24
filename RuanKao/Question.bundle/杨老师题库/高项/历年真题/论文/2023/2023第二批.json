@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1afd169d311d",
+        "course_id": 3,
+        "id": 37244060,
+        "seq": 1,
+        "test_id": "itpm1_202311_3_2",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的工作绩效域\n\n在项目生命周期过程中，项目管理者需要始终坚持项目管理原则，通过涵盖10大知识领域的项目管理过程组对项目进行管理，同时需要密切关注干系人、团队、开发方法和生命周期、规划、项目工作、交付、测量、不确定性这8个与绩效密切相关的绩效域。通过这8个绩效域帮助项目在系统内运作，实现价值交付系统的功能，为组织及其干系人创造价值，从而实现组织的战略和目标。\n\n请以“论信息系统项目的工作绩效域”为题进行论述。\n\n1.概要叙述你参与管理过的信息系统项目(项目的背景，项目规模，发起单位，目的，项目内容，组织结构，项目周期，交付的成果等)，并说明你在其中承担的工作(项目背景要求本人真实经历，不得抄袭及杜撰)。\n\n2.请结合你所叙述的信息系统项目，围绕以下要点论述你对信息系统项目工作绩效域的认识：\n(1)结合项目情况，详细阐述项目工作绩效域的绩效要点。\n(2)请根据你所描述的项目，哪些工作绩效(要点)是需要进行重点管理的。\n\n3.结合你所参与管理的信息系统项目，论述你进行绩效域管理的具体做法，并总结心得体会。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "略",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cd39b1757662873595149090",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:41:13 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "content-length": "1853",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "43",
+    "x-fc-request-id": "1-68c3ce99-181eb8bd-9eb21a2323aa",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "38.13",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

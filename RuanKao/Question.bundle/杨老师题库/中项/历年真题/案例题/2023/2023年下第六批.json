@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b31fd4ab85d09",
+        "course_id": 4,
+        "id": 40197211,
+        "seq": 1,
+        "test_id": "itpm2_202311_2_6",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题一\n\n【问题1】(10分）\n\n请从进度和成本两方面评价此项目在实施半年后的执行绩效？\n\n【问题2】(6分）\n针对项目目前的绩效情况， 项目经理宜采用什么措施？\n\n【问题3】(2分）\n假设项目后续不再发生成本偏差， 请计算项目的EAC。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "【问题1】(10分）\nPV=A+B+C+D+E=l00+70+90+80+50=390万元\nEV=80%A+100%B+90%C+90%D+100%E=l00*80%+70+90*90%+80*90%+50=353万元\nAC=A+B+C+D+E=90+65+85+75+50=365万元\nSV=EV—PV=353—390=—37万元\nCV=EV—AC=353—365=—12万元\nCV和SV均小于0, 所以， 成本超支， 进度落后\n\n【问题2 】(6分）\n(1)快速跟进， 并行施工， 以缩短关键路径的长度；\n(2) 使用高素质的资源或经验更丰富的人员；\n(3) 减小活动范围或降低活动要求；\n(4) 改进方法或技术， 以提高生产效率；\n(5) 加强质量管理， 及时发现问题；减少返工， 从而缩短工期。\n(6) 关注成本超支较严重的工作。\n(7)对成本的支出进行细化分析， 找出成本超支的原因。\n(8) 针对不同的成本超支原因，采取对应的措施。例如：减少不必要的工作、优化工作流程提高效率、削减不必要的资源。(9)定期对项目的成本绩效进行评估，及时按情况进行调整，\n\n【问题3】(2分)\n后续成本不再发生偏差，说明非典型纠偏EAC=AC+ETCETC=BAC-EVBAC是总的PV之和BAC=390万元\nETC=390-353=37万元EAC=365+37=402万元",
+        "tigan_pic": "itpm2_202311_2_6_1.jpg",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 2,
+        "sim_questions": ""
+      },
+      {
+        "_id": "c8872b64687f0b33003b31fe05dfcae3",
+        "course_id": 4,
+        "id": 47852472,
+        "seq": 2,
+        "test_id": "itpm2_202311_2_6",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题二\n\n【说明】\n\n\tA公司全球股东大会上，股东张宇发起了一个人工智能新项目。北京地区总经理李英表示非常支持，并通知研发部门组长赵军组织人力投入到项目工作中。赵军得到通知后表示目前研发部门80%的人力都已经投入到其他项目中，并认为这个项目技术风险大，资源储备不足，目前无法提供支持的人员。总经理李英希望人力资源王喜通过外包合同，加快招聘研发人员，并希望赵军内部调整资源安排核心研发人员必须投入到这个项目中。\n（上图）\n\n【问题1】\n（下图）\n结合案例，请将登记册中的项目干系人按照权力利益方格进行分组，填写在对应的分区中，并结合对应管理方法。\n\n【问题2】\n请为下列描述选择对应的沟通方法\n( )①把信息发送给需要接受这些信息的特定接收方，这种方法可以确保信息的发送，但不能确保信息送达受众或被目标受众理解，包括信件，备忘录，报告，电子邮件，传真，语音邮件，日志，新闻稿件。\n( )②在两方或多方之间进行多向信息交换，包括会议，电话，即时通话，视频会议等\n( )③用于信息量很大或受众很多的情况，要求接受者自主，自行地访问信息内容，包括企业内网，电子在线课程，经验教训数据库，知识库等\nA、推式沟通B、拉式沟通C、交互式沟通\n\n【问题3】\n①识别干系人过程的输出为（  ）\n②管理干系人参与过程的输出包括：项目管理计划更新、项目文件更新、组织过程更新、（  ）和（  ）\n\n【问题4】\n下列干系人的支持程度中（  ）意味着需要了解项目和项目的潜在影响，并积极致力于保证项目成功。\nA.不了解B.抵制C.中立D.支持E.领导",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "【问题1】\n(1)A区：李英，令其满意\n(2)B区：张宇，重点管理\n(3)C区：赵军，随时告知\n(4)D区；王喜，监督\n\n【问题2】\n①(A);②(C);③(B)\n\n【问题3】\n①(干系人登记册),\n②(变更请求)和(问题日志)\n\n【问题4】E",
+        "tigan_pic": "itpm2_202311_2_6_2.jpg",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 2,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc31a1757293672623-44735",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Mon, 08 Sep 2025 01:07:52 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "x-fc-instance-id": "c-68be25f4-18af72b7-25cf9ddb93aa",
+    "x-fc-invocation-duration": "41",
+    "x-fc-request-id": "1-68be2c68-18722279-c91e50f57acb",
+    "transfer-encoding": "chunked",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "36.30",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

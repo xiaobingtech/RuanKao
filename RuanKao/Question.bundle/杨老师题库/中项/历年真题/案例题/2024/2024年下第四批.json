@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b31ae106582f0",
+        "course_id": 4,
+        "id": 42594427,
+        "seq": 1,
+        "test_id": "itpm2_202411_2_4",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题四\n\n项目工期为9个月，实际支出70万。\n\n下图为6个月的绩效情况：\n\n【问题1】\n关键路径？D活动的总浮动？\n\n【问题2】\n假设每个活动按时间均匀分配，项目执行到第6个月结束时，请计算项目的进度绩效指数和成本绩效指数，并判断项目此时的执行绩效?\n\n【问题3】\n控制进度应关注哪些？",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "【问题1】\n关键路径两条，ABCG、AEFG，最短工期9点，D浮动时间1天\n\n【问题2】\n前6个月：\nPV = A + B + 1/2*C + D + E  = 20 + 15 + 0.5*18 + 6 + 30 = 80（万）\nAC = 70（万）\nEV = 20*100% + 15*100% + 18*50% + 6*100% + 30*80% = 74（万）\nCPI=EV/AC=74/70=1.06\nSPI=EV/PV=74/80=0.93\n状态：成本节约，进度落后 \n\n【问题3】\n·判断项目进度的当前状态；\n·对引起进度变更的因素施加影响；\n·重新考虑必要的进度储备；\n·判断项目进度是否已经发生变更；\n·在变更实际发生时对其进行管理。\n\n（下面针对敏捷项目，可不回答）\n如果采用敏捷方法，还要关注如下内容：\n·通过比较上一个时间周期中已交付并验收的工作总量与已完成的工作估算值，来判断项目进度的当前状态；\n·实施回顾性审查（定期审查，记录经验教训），以便纠正与改进过程；\n·剩余工作计划（未完项）重新进行优先级排序：\n·确定每次迭代时间（约定的工作周期持续时间，通常是两周或一个月）内可交付成果的生成、核实和验收的速度；\n·确定项目进度已经发生变更；\n·在变更实际发生时对其进行管理。",
+        "tigan_pic": "itpm2_202411_2_4.jpg",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 1,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc31c1757293463909191385",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Mon, 08 Sep 2025 01:04:23 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "x-fc-instance-id": "c-68be25f4-18af72b7-25cf9ddb93aa",
+    "x-fc-invocation-duration": "48",
+    "x-fc-request-id": "1-68be2b97-1847e71b-3dc3bf5abbbc",
+    "transfer-encoding": "chunked",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "36.16",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

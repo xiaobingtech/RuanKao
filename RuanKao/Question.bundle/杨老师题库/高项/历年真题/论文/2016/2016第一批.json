@@ -1,0 +1,70 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b166641b4db4b",
+        "course_id": 3,
+        "id": 32234194,
+        "seq": 1,
+        "test_id": "itpm1_201611_3",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题一  论信息系统项目的绩效管理\n 绩效管理是任何组织都必须要面对的问题，是组织管理的重要组成部分。作为项目经理或项目团队的相关负责人员，不仅必须要关注项目绩效，激发员工的活力，并且还需要定期或不定期地对项目的绩效进行考核，保证项目能够按照预期的计划实施。如何有效地实施项目绩效管理，充分发挥项目团队每个成员的积极性，是项目经理在管理项目时必须面对的一项重要任务。\n 请以“信息系统项目的绩效管理”为题，分别从以下三个方面进行论述：\n 1、简要说明你参与的信息系统项目的背景、目的、发起单位的性质，项目的技术和运行特点、项目的周期、绩效管理的特点，以及你在项目中的主要角色和职责。\n 2、结合你参与的项目，论述项目绩效管理的流程、方法、以及使用的基本工具。\n 3、根据你的项目绩效管理实践，说明你是如何进行项目绩效管理的，有哪些经验和教训。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      },
+      {
+        "_id": "c8872b64687f0b33003b161c1185143a",
+        "course_id": 3,
+        "id": 39192439,
+        "seq": 2,
+        "test_id": "itpm1_201611_3",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题二  论信息系统项目的人力资源管理\n 随着信息系统集成项目不断地向智能化、规模化发展，项目团队成员呈现高学历、高专业化分工以及年轻化的趋势。如何管理好项目团队成员，并充分调动他们的积极性，成为当前项目经理急需要解决的问题。尤其是对于专业的信息系统集成公司和软件公司而言，人力资源成本基本是公司最大的投入。如何充分利用公司的人力资源，实现公司的战略目标，保证项目能够按照计划完成，是项目经理的重要任务。\n 请以“信息系统项目的人力资源管理”为题，分别从以下三个方面进行论述：\n 1、简要说明你参与的信息系统项目的背景、目的、发起单位的性质，项目的技术和运行特点、项目的周期、人力资源需求的特点，以及你在项目中的主要角色和职责。\n 2、结合你参与的项目，论述项目人力资源管理的主要流程，关键的输入输出、使用的基本工具，以及相关的激励理论和团队建设理论。\n 3、根据你的项目人力资源管理实践，说明你是如何进行项目人力资源管理的，有哪些经验和教训。",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc3201757663275165183014",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:47:55 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "46",
+    "x-fc-request-id": "1-68c3d02b-181ba6a7-4850e29dc71c",
+    "transfer-encoding": "chunked",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "38.20",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}

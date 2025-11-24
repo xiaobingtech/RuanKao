@@ -1,0 +1,47 @@
+{
+  "success": true,
+  "data": {
+    "errCode": 0,
+    "errMsg": "执行成功",
+    "data": [
+      {
+        "_id": "c8872b64687f0b33003b1b98226ff202",
+        "course_id": 3,
+        "id": 36010188,
+        "seq": 1,
+        "test_id": "itpm1_202505_3_1",
+        "type": 3,
+        "area": 0,
+        "tigan": "试题：论信息系统项目的交付绩效域\n1、概要叙述你参与管理过程的信息系统项目(项目背景、项目规模、发起单位、目的、项目内容、组织结构、项目周期、交付的成果等)，并说明你在其中承担的工作。(选择的背景要求本人真实经历，不得抄袭及杜撰)\n2、结合项目管理实际情况并围绕以下要点论述你对信息系统项目成本管理的认识：\n(1)为有效执行交付绩效域，作为项目经理需重点关注哪些方面?\n(2)请根据你所描述的项目，按项目管理五大过程组的顺序，描述各个过程组哪些绩效域可与交付绩效域协同目标？\n(3)请根据你所描述的项目，制定各过程组交付绩效域测量指标?\n字数要求2000-3500",
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": "",
+        "answer": "",
+        "explanation": "略",
+        "tigan_pic": "",
+        "explanation_pic": "",
+        "done_count": 0,
+        "correct_count": 0,
+        "correct_prob": 0,
+        "fav_count": 0,
+        "sim_questions": ""
+      }
+    ]
+  },
+  "header": {
+    "x-serverless-request-id": "ac1cc31e1757662727676158017",
+    "x-serverless-runtime-version": "2.1.3",
+    "date": "Fri, 12 Sep 2025 07:38:47 GMT",
+    "x-fc-invocation-function-version": "LATEST",
+    "content-length": "1299",
+    "x-fc-instance-id": "c-68c3aed1-18797068-796859b4bf03",
+    "x-fc-invocation-duration": "41",
+    "x-fc-request-id": "1-68c3ce07-1847e71b-be610cd06755",
+    "content-type": "application/octet-stream",
+    "x-fc-max-memory-usage": "38.30",
+    "access-control-expose-headers": "Date,x-fc-request-id,x-fc-error-type,x-fc-code-checksum,x-fc-invocation-duration,x-fc-max-memory-usage,x-fc-log-result,x-fc-invocation-code-version,x-fc-instance-id",
+    "x-fc-code-checksum": "3373688905125190371",
+    "x-serverless-http-status": "200"
+  }
+}
