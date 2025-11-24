@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct ProfileView: View {
-    @State private var userName: String = "软考学员"
-    @State private var favoriteCount: Int = 23
+    @StateObject private var userPreferences = UserPreferences.shared
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     // Avatar and Nickname Section
-                    ProfileHeaderSection(userName: userName)
+                    ProfileHeaderSection(
+                        userName: userPreferences.userFullName ?? "软考学员",
+                        userEmail: userPreferences.userEmail
+                    )
                         .padding(.top, 20)
                         .padding(.bottom, 32)
                     
@@ -28,7 +30,7 @@ struct ProfileView: View {
                                 icon: "star.fill",
                                 title: "收藏的题目",
                                 iconColor: .orange,
-                                badgeCount: favoriteCount
+                                badgeCount: 23
                             )
                         }
                         
@@ -72,6 +74,7 @@ struct ProfileView: View {
 // MARK: - Profile Header Section
 struct ProfileHeaderSection: View {
     let userName: String
+    let userEmail: String?
     
     var body: some View {
         VStack(spacing: 16) {
@@ -100,6 +103,13 @@ struct ProfileHeaderSection: View {
             Text(userName)
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.primary)
+            
+            // Email (if available)
+            if let email = userEmail {
+                Text(email)
+                    .font(.system(size: 14, weight: .regular))
+                    .foregroundColor(.secondary)
+            }
         }
     }
 }

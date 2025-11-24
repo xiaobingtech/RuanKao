@@ -10,6 +10,7 @@ import AuthenticationServices
 
 struct LoginView: View {
     @Environment(\.colorScheme) var colorScheme
+    @StateObject private var userPreferences = UserPreferences.shared
     @State private var isAuthenticated = false
     
     var body: some View {
@@ -71,6 +72,24 @@ struct LoginView: View {
                             case .success(let authorization):
                                 // Handle successful authentication
                                 print("Authorization successful: \(authorization)")
+                                
+                                // Extract user credentials
+                                if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                                    let fullName: String?
+                                    if let givenName = appleIDCredential.fullName?.givenName,
+                                       let familyName = appleIDCredential.fullName?.familyName {
+                                        fullName = "\(familyName)\(givenName)"  // Chinese name format
+                                    } else {
+                                        fullName = nil
+                                    }
+                                    
+                                    let email = appleIDCredential.email
+                                    
+                                    // Save user data
+                                    userPreferences.setUserData(fullName: fullName, email: email)
+                                    print("Saved user data - Name: \(fullName ?? "N/A"), Email: \(email ?? "N/A")")
+                                }
+                                
                                 // Navigate to main app
                                 isAuthenticated = true
                                 

@@ -8,12 +8,14 @@
 import SwiftUI
 
 struct QuestionBankView: View {
+    @StateObject private var userPreferences = UserPreferences.shared
+    @State private var navigateToChapters = false
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
                     // Chapter-based Question Bank Section
-                    ChapterQuestionBankSection()
+                    ChapterQuestionBankSection(navigateToChapters: $navigateToChapters)
                         .padding(.horizontal)
                         .padding(.top, 8)
                     
@@ -25,12 +27,17 @@ struct QuestionBankView: View {
             }
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("题库")
+            .navigationDestination(isPresented: $navigateToChapters) {
+                ChapterSelectionView()
+            }
         }
     }
 }
 
 // MARK: - Chapter Question Bank Section
 struct ChapterQuestionBankSection: View {
+    @Binding var navigateToChapters: Bool
+    @StateObject private var userPreferences = UserPreferences.shared
     var body: some View {
         VStack(spacing: 16) {
             // Section Header
@@ -81,7 +88,12 @@ struct ChapterQuestionBankSection: View {
             
             // Start Practice Button
             Button(action: {
-                // Navigate to chapter selection
+                // Check if course is selected
+                if userPreferences.selectedCourseId != nil {
+                    navigateToChapters = true
+                } else {
+                    print("Please select a course first")
+                }
             }) {
                 HStack {
                     Image(systemName: "play.fill")

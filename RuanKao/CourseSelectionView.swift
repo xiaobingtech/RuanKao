@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CourseSelectionView: View {
+    @StateObject private var userPreferences = UserPreferences.shared
     @State private var selectedCourse: CourseType? = nil
     @State private var navigateToMain = false
     
@@ -26,6 +27,15 @@ struct CourseSelectionView: View {
         
         var fullName: String {
             return self.rawValue
+        }
+        
+        var courseId: Int {
+            switch self {
+            case .advanced:
+                return 3  // 高项
+            case .intermediate:
+                return 4  // 中项
+            }
         }
         
         var icon: String {
@@ -94,6 +104,8 @@ struct CourseSelectionView: View {
                             isSelected: selectedCourse == .advanced
                         ) {
                             selectedCourse = .advanced
+                            // Save course selection
+                            userPreferences.selectAdvancedCourse()
                             // Delay navigation slightly for better UX
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 navigateToMain = true
@@ -106,6 +118,8 @@ struct CourseSelectionView: View {
                             isSelected: selectedCourse == .intermediate
                         ) {
                             selectedCourse = .intermediate
+                            // Save course selection
+                            userPreferences.selectIntermediateCourse()
                             // Delay navigation slightly for better UX
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                                 navigateToMain = true
