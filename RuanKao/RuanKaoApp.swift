@@ -11,7 +11,7 @@ import SwiftUI
 struct RuanKaoApp: App {
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            AppRootView()
         }
     }
 }

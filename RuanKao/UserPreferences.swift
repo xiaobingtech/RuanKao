@@ -41,6 +41,13 @@ class UserPreferences: ObservableObject {
         }
     }
     
+    @Published var isLoggedIn: Bool {
+        didSet {
+            UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     // MARK: - Computed Properties
     var isAdvancedCourse: Bool {
         return selectedCourseId == 3
@@ -71,6 +78,7 @@ class UserPreferences: ObservableObject {
         self.selectedCourseName = UserDefaults.standard.string(forKey: "selectedCourseName")
         self.userFullName = UserDefaults.standard.string(forKey: "userFullName")
         self.userEmail = UserDefaults.standard.string(forKey: "userEmail")
+        self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
     }
     
     // MARK: - Course Selection
@@ -98,10 +106,20 @@ class UserPreferences: ObservableObject {
         self.userEmail = nil
     }
     
+    // MARK: - Authentication
+    func login() {
+        self.isLoggedIn = true
+    }
+    
+    func logout() {
+        self.isLoggedIn = false
+    }
+    
     func clearAll() {
         self.selectedCourseId = nil
         self.selectedCourseName = nil
         self.userFullName = nil
         self.userEmail = nil
+        self.isLoggedIn = false
     }
 }

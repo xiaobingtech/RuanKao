@@ -11,7 +11,6 @@ import AuthenticationServices
 struct LoginView: View {
     @Environment(\.colorScheme) var colorScheme
     @StateObject private var userPreferences = UserPreferences.shared
-    @State private var isAuthenticated = false
     
     var body: some View {
         ZStack {
@@ -88,15 +87,14 @@ struct LoginView: View {
                                     // Save user data
                                     userPreferences.setUserData(fullName: fullName, email: email)
                                     print("Saved user data - Name: \(fullName ?? "N/A"), Email: \(email ?? "N/A")")
+                                    
+                                    // Set login status
+                                    userPreferences.login()
                                 }
-                                
-                                // Navigate to main app
-                                isAuthenticated = true
                                 
                             case .failure(let error):
                                 // Handle authentication error
                                 print("Authorization failed: \(error.localizedDescription)")
-                                isAuthenticated = true
                             }
                         }
                     )
@@ -115,9 +113,6 @@ struct LoginView: View {
                 .padding(.horizontal, 32)
                 .padding(.bottom, 50)
             }
-        }
-        .fullScreenCover(isPresented: $isAuthenticated) {
-            CourseSelectionView()
         }
     }
 }
