@@ -79,7 +79,8 @@ struct ChapterSelectionView: View {
         
         // Determine the path based on course_id
         let courseName = courseId == 3 ? "高项" : "中项"
-        let bundlePath = "杨老师题库/\\(courseName)/分章题库"
+        //路径间用\分割
+        let bundlePath = "/杨老师题库/\(courseName)/分章题库"
         
         guard let bundle = Bundle.main.path(forResource: "Question", ofType: "bundle"),
               let questionBundle = Bundle(path: bundle) else {
@@ -92,7 +93,7 @@ struct ChapterSelectionView: View {
             return
         }
         
-        let chapterPath = "\\(resourcePath)/\\(bundlePath)"
+        let chapterPath = "\(resourcePath)/\(bundlePath)"
         
         do {
             let fileManager = FileManager.default
@@ -101,7 +102,7 @@ struct ChapterSelectionView: View {
             var loadedChapters: [ChapterInfo] = []
             
             for folder in chapterFolders where !folder.hasPrefix(".") {
-                let folderPath = "\\(chapterPath)/\\(folder)"
+                let folderPath = "\(chapterPath)/\(folder)"
                 var isDirectory: ObjCBool = false
                 
                 if fileManager.fileExists(atPath: folderPath, isDirectory: &isDirectory), isDirectory.boolValue {
@@ -121,9 +122,9 @@ struct ChapterSelectionView: View {
             // Sort chapters
             self.chapters = loadedChapters.sorted { $0.name < $1.name }
             
-            print("Loaded \\(chapters.count) chapters for course: \\(courseName)")
+            print("Loaded \(chapters.count) chapters for course: \(courseName)")
         } catch {
-            print("Error loading chapters: \\(error)")
+            print("Error loading chapters: \(error)")
         }
     }
 }
@@ -174,7 +175,7 @@ struct ChapterCard: View {
                         .foregroundColor(.primary)
                         .lineLimit(1)
                     
-                    Text("\\(chapter.questionGroupCount)组题目")
+                    Text("\(chapter.questionGroupCount)组题目")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(.secondary)
                 }
