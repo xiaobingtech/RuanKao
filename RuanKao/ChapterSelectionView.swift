@@ -119,13 +119,40 @@ struct ChapterSelectionView: View {
                 }
             }
             
-            // Sort chapters
-            self.chapters = loadedChapters.sorted { $0.name < $1.name }
+            // Sort chapters by chapter number
+            self.chapters = loadedChapters.sorted { chapter1, chapter2 in
+                let num1 = extractChapterNumber(from: chapter1.name)
+                let num2 = extractChapterNumber(from: chapter2.name)
+                return num1 < num2
+            }
             
             print("Loaded \(chapters.count) chapters for course: \(courseName)")
         } catch {
             print("Error loading chapters: \(error)")
         }
+    }
+    
+    /// Extract chapter number from chapter name (e.g., "第一章" -> 1, "第十章" -> 10)
+    private func extractChapterNumber(from chapterName: String) -> Int {
+        let chineseNumbers: [String: Int] = [
+            "一": 1, "二": 2, "三": 3, "四": 4, "五": 5,
+            "六": 6, "七": 7, "八": 8, "九": 9, "十": 10,
+            "十一": 11, "十二": 12, "十三": 13, "十四": 14, "十五": 15,
+            "十六": 16, "十七": 17, "十八": 18, "十九": 19, "二十": 20,
+            "二十一": 21, "二十二": 22, "二十三": 23, "二十四": 24, "二十五": 25
+        ]
+        
+        // Try to extract Chinese number between "第" and "章"
+        if let startRange = chapterName.range(of: "第"),
+           let endRange = chapterName.range(of: "章") {
+            let numberPart = String(chapterName[startRange.upperBound..<endRange.lowerBound])
+            if let number = chineseNumbers[numberPart] {
+                return number
+            }
+        }
+        
+        // Fallback: return a large number to push unknown formats to the end
+        return 999
     }
 }
 
