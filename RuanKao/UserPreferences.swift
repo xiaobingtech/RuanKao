@@ -16,24 +16,28 @@ class UserPreferences: ObservableObject {
     @Published var selectedCourseId: Int? {
         didSet {
             UserDefaults.standard.set(selectedCourseId, forKey: "selectedCourseId")
+            UserDefaults.standard.synchronize()
         }
     }
     
     @Published var selectedCourseName: String? {
         didSet {
             UserDefaults.standard.set(selectedCourseName, forKey: "selectedCourseName")
+            UserDefaults.standard.synchronize()
         }
     }
     
     @Published var userFullName: String? {
         didSet {
             UserDefaults.standard.set(userFullName, forKey: "userFullName")
+            UserDefaults.standard.synchronize()
         }
     }
     
     @Published var userEmail: String? {
         didSet {
             UserDefaults.standard.set(userEmail, forKey: "userEmail")
+            UserDefaults.standard.synchronize()
         }
     }
     
