@@ -7,6 +7,47 @@
 
 import SwiftUI
 
+// MARK: - Exam Papers Counter
+class ExamPapersCounter {
+    static func countExamPapers(courseId: Int, category: String) -> Int {
+        let courseName = courseId == 3 ? "高项" : "中项"
+        
+        // Use proper Bundle API to get Question.bundle
+        guard let questionBundlePath = Bundle.main.path(forResource: "Question", ofType: "bundle"),
+              let questionBundle = Bundle(path: questionBundlePath) else {
+            print("Error: Question.bundle not found")
+            return 0
+        }
+        
+        // Construct path within the bundle
+        let relativePath = "杨老师题库/\(courseName)/历年真题/\(category)"
+        guard let categoryPath = questionBundle.path(forResource: relativePath, ofType: nil) else {
+            print("Error: Category path not found: \(relativePath)")
+            return 0
+        }
+        
+        var totalCount = 0
+        let fileManager = FileManager.default
+        let categoryURL = URL(fileURLWithPath: categoryPath)
+        
+        do {
+            // Get all year directories
+            let yearDirs = try fileManager.contentsOfDirectory(at: categoryURL, includingPropertiesForKeys: nil)
+            
+            for yearDir in yearDirs where yearDir.hasDirectoryPath {
+                // Count JSON files in each year directory
+                let jsonFiles = try fileManager.contentsOfDirectory(at: yearDir, includingPropertiesForKeys: nil)
+                    .filter { $0.pathExtension == "json" }
+                totalCount += jsonFiles.count
+            }
+        } catch {
+            print("Error counting exam papers: \(error)")
+        }
+        
+        return totalCount
+    }
+}
+
 struct QuestionBankView: View {
     @StateObject private var userPreferences = UserPreferences.shared
     @State private var navigateToChapters = false
@@ -169,6 +210,8 @@ struct FeatureRow: View {
 
 // MARK: - Past Exam Papers Section
 struct PastExamPapersSection: View {
+    @StateObject private var userPreferences = UserPreferences.shared
+    
     var body: some View {
         VStack(spacing: 16) {
             // Section Header
@@ -193,31 +236,41 @@ struct PastExamPapersSection: View {
                 Spacer()
             }
             
-            // Three Modules
+            // Exam Modules (dynamically show based on selected course)
             VStack(spacing: 12) {
-                ExamModuleCard(
-                    icon: "brain.head.profile",
-                    title: "综合知识",
-                    subtitle: "上午考试 · 75道选择题",
-                    color: .blue,
-                    availableCount: 12
-                )
-                
-                ExamModuleCard(
-                    icon: "doc.plaintext",
-                    title: "案例题",
-                    subtitle: "上午考试 · 案例分析",
-                    color: .green,
-                    availableCount: 10
-                )
-                
-                ExamModuleCard(
-                    icon: "pencil.and.outline",
-                    title: "论文",
-                    subtitle: "下午考试 · 论文写作",
-                    color: .orange,
-                    availableCount: 8
-                )
+                if let courseId = userPreferences.selectedCourseId {
+                    ExamModuleCard(
+                        icon: "brain.head.profile",
+                        title: "综合知识",
+                        subtitle: "上午考试 · 75道选择题",
+                        color: .blue,
+                        availableCount: ExamPapersCounter.countExamPapers(courseId: courseId, category: "综合知识")
+                    )
+                    
+                    ExamModuleCard(
+                        icon: "doc.plaintext",
+                        title: "案例题",
+                        subtitle: "上午考试 · 案例分析",
+                        color: .green,
+                        availableCount: ExamPapersCounter.countExamPapers(courseId: courseId, category: "案例题")
+                    )
+                    
+                    // Only show 论文 for 高项 (course ID = 3)
+                    if courseId == 3 {
+                        ExamModuleCard(
+                            icon: "pencil.and.outline",
+                            title: "论文",
+                            subtitle: "下午考试 · 论文写作",
+                            color: .orange,
+                            availableCount: ExamPapersCounter.countExamPapers(courseId: courseId, category: "论文")
+                        )
+                    }
+                } else {
+                    // Show placeholder when no course is selected
+                    Text("请先选择课程")
+                        .foregroundColor(.secondary)
+                        .padding()
+                }
             }
         }
         .padding(20)
