@@ -14,6 +14,12 @@ struct EssayExamSelectionView: View {
     @StateObject private var userPreferences = UserPreferences.shared
     @State private var yearGroups: [YearGroup] = []
     @State private var isLoading = true
+    @State private var selectedYear: String?
+    @State private var selectedBatch: String?
+    
+    var isConfirmEnabled: Bool {
+        selectedYear != nil && selectedBatch != nil
+    }
     
     var body: some View {
         ScrollView {
@@ -27,11 +33,7 @@ struct EssayExamSelectionView: View {
                 } else if yearGroups.isEmpty {
                     emptyStateView
                 } else {
-                    // Year Sections
-                    ForEach(yearGroups) { yearGroup in
-                        yearSectionView(yearGroup: yearGroup)
-                    }
-                    .padding(.horizontal)
+                    contentView
                 }
                 
                 Spacer()
@@ -90,6 +92,25 @@ struct EssayExamSelectionView: View {
         .padding(.top, 60)
     }
     
+    private var contentView: some View {
+        VStack(spacing: 24) {
+            // Year and Batch Selection Sections
+            ForEach(yearGroups) { yearGroup in
+                yearSectionView(yearGroup: yearGroup)
+                    .padding(.horizontal)
+            }
+            
+            // Confirm Button
+            if selectedYear != nil && selectedBatch != nil {
+                confirmButton
+                    .padding(.horizontal)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+            }
+        }
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedYear)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedBatch)
+    }
+    
     private func yearSectionView(yearGroup: YearGroup) -> some View {
         VStack(alignment: .leading, spacing: 16) {
             // Year Header
@@ -105,16 +126,10 @@ struct EssayExamSelectionView: View {
                 Spacer()
             }
             
-            // Batch Cards
-            VStack(spacing: 12) {
+            // Batch Selection
+            HStack(spacing: 12) {
                 ForEach(yearGroup.batches, id: \.self) { batch in
-                    NavigationLink(destination: EssayPracticeView(
-                        category: category,
-                        year: yearGroup.year,
-                        batch: batch
-                    )) {
-                        BatchCard(batch: batch, color: category == .caseStudy ? .green : .orange)
-                    }
+                    batchSelectionCard(year: yearGroup.year, batch: batch)
                 }
             }
         }
@@ -126,6 +141,87 @@ struct EssayExamSelectionView: View {
         )
     }
     
+    private func batchSelectionCard(year: String, batch: String) -> some View {
+        let isSelected = selectedYear == year && selectedBatch == batch
+        let cardColor = category == .caseStudy ? Color.green : Color.orange
+        
+        return Button(action: {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                selectedYear = year
+                selectedBatch = batch
+            }
+        }) {
+            VStack(spacing: 8) {
+                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 24, weight: .semibold))
+                    .foregroundColor(isSelected ? cardColor : .secondary)
+                
+                Text(batch)
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(isSelected ? .primary : .secondary)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 80)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(isSelected ?
+                          cardColor.opacity(0.1) :
+                            Color(UIColor.secondarySystemGroupedBackground))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(
+                        isSelected ?
+                        cardColor :
+                            Color.gray.opacity(0.2),
+                        lineWidth: isSelected ? 2 : 1
+                    )
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    private var confirmButton: some View {
+        NavigationLink(
+            destination: Group {
+                if let year = selectedYear, 
+                   let batch = selectedBatch {
+                    EssayPracticeView(
+                        category: category,
+                        year: year,
+                        batch: batch
+                    )
+                }
+            }
+        ) {
+            HStack {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                Text("开始练习")
+                    .font(.system(size: 17, weight: .semibold))
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: 54)
+            .background(
+                LinearGradient(
+                    colors: isConfirmEnabled ? [
+                        Color(red: 0.3, green: 0.4, blue: 0.9),
+                        Color(red: 0.5, green: 0.3, blue: 0.8)
+                    ] : [Color.gray, Color.gray],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .foregroundColor(.white)
+            .cornerRadius(12)
+            .shadow(
+                color: isConfirmEnabled ? Color(red: 0.4, green: 0.35, blue: 0.85).opacity(0.3) : Color.clear,
+                radius: 8, x: 0, y: 4
+            )
+        }
+        .disabled(!isConfirmEnabled)
+    }
+    
     private func loadYearGroups() {
         guard let courseId = userPreferences.selectedCourseId else {
             print("No course selected")
@@ -135,66 +231,6 @@ struct EssayExamSelectionView: View {
         
         yearGroups = ExamPaperHelper.getYearGroups(courseId: courseId, category: category)
         isLoading = false
-    }
-}
-
-// MARK: - Batch Card
-struct BatchCard: View {
-    let batch: String
-    let color: Color
-    @State private var isPressed = false
-    
-    var body: some View {
-        HStack(spacing: 16) {
-            // Icon
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [color, color.opacity(0.7)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 50, height: 50)
-                
-                Image(systemName: "doc.text")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-            }
-            
-            // Batch Name
-            VStack(alignment: .leading, spacing: 4) {
-                Text(batch)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.primary)
-                
-                Text("点击查看题目")
-                    .font(.system(size: 13, weight: .regular))
-                    .foregroundColor(.secondary)
-            }
-            
-            Spacer()
-            
-            // Arrow
-            Image(systemName: "chevron.right")
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(.secondary)
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(color.opacity(0.08))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(color.opacity(0.2), lineWidth: 1)
-        )
-        .scaleEffect(isPressed ? 0.97 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
-        .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
-            isPressed = pressing
-        }, perform: {})
     }
 }
 
