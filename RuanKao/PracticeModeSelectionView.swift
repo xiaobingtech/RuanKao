@@ -155,6 +155,7 @@ struct PracticeModeSelectionView: View {
         .background(Color(UIColor.systemGroupedBackground))
         .navigationTitle("练习设置")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
 
 }

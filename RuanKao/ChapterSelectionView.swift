@@ -66,6 +66,7 @@ struct ChapterSelectionView: View {
         .background(Color(UIColor.systemGroupedBackground))
         .navigationTitle("分章题库")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             loadChapters()
         }

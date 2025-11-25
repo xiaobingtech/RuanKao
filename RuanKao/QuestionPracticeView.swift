@@ -106,6 +106,7 @@ struct QuestionPracticeView: View {
         .navigationTitle("\(chapter.name) - 第\(groupNumber)组")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(showExamResult)
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             loadQuestions()
         }
@@ -597,6 +598,7 @@ struct WrongQuestionsView: View {
         .background(Color(UIColor.systemGroupedBackground))
         .navigationTitle("错题记录")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
 }
 
