@@ -99,16 +99,7 @@ struct EssayExamSelectionView: View {
                 yearSectionView(yearGroup: yearGroup)
                     .padding(.horizontal)
             }
-            
-            // Confirm Button
-            if selectedYear != nil && selectedBatch != nil {
-                confirmButton
-                    .padding(.horizontal)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-            }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedYear)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedBatch)
     }
     
     private func yearSectionView(yearGroup: YearGroup) -> some View {
@@ -145,12 +136,11 @@ struct EssayExamSelectionView: View {
         let isSelected = selectedYear == year && selectedBatch == batch
         let cardColor = category == .caseStudy ? Color.green : Color.orange
         
-        return Button(action: {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                selectedYear = year
-                selectedBatch = batch
-            }
-        }) {
+        return NavigationLink(destination: EssayPracticeView(
+            category: category,
+            year: year,
+            batch: batch
+        )) {
             VStack(spacing: 8) {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .font(.system(size: 24, weight: .semibold))
@@ -170,56 +160,11 @@ struct EssayExamSelectionView: View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(
-                        isSelected ?
-                        cardColor :
-                            Color.gray.opacity(0.2),
-                        lineWidth: isSelected ? 2 : 1
-                    )
+                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
             )
+            .cornerRadius(12)
         }
         .buttonStyle(PlainButtonStyle())
-    }
-    
-    private var confirmButton: some View {
-        NavigationLink(
-            destination: Group {
-                if let year = selectedYear, 
-                   let batch = selectedBatch {
-                    EssayPracticeView(
-                        category: category,
-                        year: year,
-                        batch: batch
-                    )
-                }
-            }
-        ) {
-            HStack {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 18, weight: .semibold))
-                Text("开始练习")
-                    .font(.system(size: 17, weight: .semibold))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 54)
-            .background(
-                LinearGradient(
-                    colors: isConfirmEnabled ? [
-                        Color(red: 0.3, green: 0.4, blue: 0.9),
-                        Color(red: 0.5, green: 0.3, blue: 0.8)
-                    ] : [Color.gray, Color.gray],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(
-                color: isConfirmEnabled ? Color(red: 0.4, green: 0.35, blue: 0.85).opacity(0.3) : Color.clear,
-                radius: 8, x: 0, y: 4
-            )
-        }
-        .disabled(!isConfirmEnabled)
     }
     
     private func loadYearGroups() {
