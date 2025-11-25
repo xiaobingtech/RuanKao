@@ -207,29 +207,6 @@ struct QuestionPracticeView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Explanation (for Memorization Mode)
-                    if practiceMode == .memorization && !question.explanation.isEmpty {
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack {
-                                Image(systemName: "lightbulb.fill")
-                                    .foregroundColor(.orange)
-                                Text("答案解析")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(.primary)
-                            }
-                            
-                            Text(question.explanation)
-                                .font(.system(size: 15, weight: .regular))
-                                .foregroundColor(.secondary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .padding(20)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color.orange.opacity(0.1))
-                        .cornerRadius(12)
-                        .padding(.horizontal)
-                    }
-                    
                     // Navigation Buttons
                     HStack(spacing: 16) {
                         Button(action: previousQuestion) {
@@ -294,7 +271,32 @@ struct QuestionPracticeView: View {
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.bottom, 24)
+                    
+                    // Explanation (for Memorization Mode)
+                    if practiceMode == .memorization && !question.explanation.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            HStack {
+                                Image(systemName: "lightbulb.fill")
+                                    .foregroundColor(.orange)
+                                Text("答案解析")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(.primary)
+                            }
+                            
+                            Text(question.explanation)
+                                .font(.system(size: 15, weight: .regular))
+                                .foregroundColor(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .padding(20)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(12)
+                        .padding(.horizontal)
+                    }
+                    
+                    Spacer()
+                        .frame(height: 24)
                 }
             }
         }
@@ -465,6 +467,7 @@ struct OptionButton: View {
             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
+        .disabled(showAnswer)
         .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})
