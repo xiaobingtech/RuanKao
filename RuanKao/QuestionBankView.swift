@@ -291,10 +291,49 @@ struct ExamModuleCard: View {
     let availableCount: Int
     
     @State private var isPressed = false
+    @State private var navigateToExam = false
+    
+    // Determine exam category based on title
+    var examCategory: ExamCategory? {
+        switch title {
+        case "综合知识":
+            return .comprehensive
+        case "案例题":
+            return .caseStudy
+        case "论文":
+            return .essay
+        default:
+            return nil
+        }
+    }
     
     var body: some View {
+        NavigationLink(
+            destination: destinationView,
+            isActive: $navigateToExam
+        ) {
+            cardContent
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+    
+    @ViewBuilder
+    private var destinationView: some View {
+        if let category = examCategory {
+            switch category {
+            case .comprehensive:
+                ComprehensiveExamSelectionView()
+            case .caseStudy, .essay:
+                EssayExamSelectionView(category: category)
+            }
+        } else {
+            EmptyView()
+        }
+    }
+    
+    private var cardContent: some View {
         Button(action: {
-            // Navigate to exam papers list
+            navigateToExam = true
         }) {
             HStack(spacing: 16) {
                 // Icon

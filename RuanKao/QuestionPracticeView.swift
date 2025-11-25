@@ -41,6 +41,49 @@ struct Question: Codable, Identifiable {
         case tiganPic = "tigan_pic"
         case explanationPic = "explanation_pic"
     }
+    
+    // Custom decoder to handle both String and numeric values for A, B, C, D
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        courseId = try container.decode(Int.self, forKey: .courseId)
+        questionId = try container.decode(Int.self, forKey: .questionId)
+        seq = try container.decode(Int.self, forKey: .seq)
+        testId = try container.decode(String.self, forKey: .testId)
+        type = try container.decode(Int.self, forKey: .type)
+        area = try container.decode(Int.self, forKey: .area)
+        tigan = try container.decode(String.self, forKey: .tigan)
+        
+        // Handle A, B, C, D - can be either String or Number
+        A = try Self.decodeStringOrNumber(from: container, forKey: .A)
+        B = try Self.decodeStringOrNumber(from: container, forKey: .B)
+        C = try Self.decodeStringOrNumber(from: container, forKey: .C)
+        D = try Self.decodeStringOrNumber(from: container, forKey: .D)
+        
+        answer = try container.decode(String.self, forKey: .answer)
+        explanation = try container.decode(String.self, forKey: .explanation)
+        tiganPic = try container.decode(String.self, forKey: .tiganPic)
+        explanationPic = try container.decode(String.self, forKey: .explanationPic)
+    }
+    
+    // Helper method to decode either String or Number
+    private static func decodeStringOrNumber(from container: KeyedDecodingContainer<CodingKeys>, forKey key: CodingKeys) throws -> String {
+        // Try to decode as String first
+        if let stringValue = try? container.decode(String.self, forKey: key) {
+            return stringValue
+        }
+        // If that fails, try to decode as Int
+        if let intValue = try? container.decode(Int.self, forKey: key) {
+            return String(intValue)
+        }
+        // If that fails, try to decode as Double
+        if let doubleValue = try? container.decode(Double.self, forKey: key) {
+            return String(doubleValue)
+        }
+        // If all fail, return empty string
+        return ""
+    }
 }
 
 struct QuestionResponse: Codable {
