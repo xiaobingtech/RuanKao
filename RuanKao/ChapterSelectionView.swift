@@ -170,10 +170,7 @@ struct ChapterCard: View {
     @State private var isPressed = false
     
     var body: some View {
-        Button(action: {
-            // Navigate to question practice
-            print("Selected chapter: \\(chapter.name)")
-        }) {
+        NavigationLink(destination: PracticeModeSelectionView(chapter: chapter)) {
             HStack(spacing: 16) {
                 // Chapter Icon
                 ZStack {
