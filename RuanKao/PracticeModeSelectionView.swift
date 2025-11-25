@@ -109,9 +109,17 @@ struct PracticeModeSelectionView: View {
                     .padding(.horizontal)
                     
                     // Confirm Button
-                    Button(action: {
-                        handleConfirm()
-                    }) {
+                    NavigationLink(
+                        destination: Group {
+                            if let group = selectedGroup, let mode = selectedMode {
+                                QuestionPracticeView(
+                                    chapter: chapter,
+                                    groupNumber: group,
+                                    practiceMode: mode
+                                )
+                            }
+                        }
+                    ) {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 18, weight: .semibold))
@@ -148,12 +156,7 @@ struct PracticeModeSelectionView: View {
         .navigationTitle("练习设置")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
-    private func handleConfirm() {
-        guard let group = selectedGroup, let mode = selectedMode else { return }
-        print("开始练习 - 章节: \(chapter.name), 题组: 第\(group)组, 模式: \(mode.rawValue)")
-        // TODO: Navigate to practice view
-    }
+
 }
 
 // MARK: - Section Header
