@@ -9,43 +9,85 @@ import SwiftUI
 import SwiftData
 
 struct HomeView: View {
+    @ObservedObject private var userPreferences = UserPreferences.shared
+    
+    var body: some View {
+        NavigationStack {
+            if let courseId = userPreferences.selectedCourseId {
+                HomeContentView(courseId: courseId)
+            } else {
+                // Fallback or empty state if no course selected
+                ContentUnavailableView("请先选择课程", systemImage: "book.closed")
+            }
+        }
+    }
+}
+
+struct HomeContentView: View {
+    let courseId: Int
+    
     // Countdown timer state
     @State private var timeRemaining: TimeInterval = 0
     @State private var timer: Timer? = nil
     
-    // SwiftData query for wrong questions
+    // SwiftData queries with dynamic filtering
     @Query private var wrongQuestions: [WrongQuestion]
+    @Query private var allStatistics: [StudyStatistics]
     
-    // Study statistics (mock data, can be replaced with actual data from UserDefaults or database)
-    @State private var practiceQuestions: Int = 1234
-    @State private var averageAccuracy: Double = 78.5
-    @State private var studyDuration: TimeInterval = 14580 // in seconds
-    @State private var completedExams: Int = 15
+    // Model context for creating/updating data
+    @Environment(\.modelContext) private var modelContext
+    
+    init(courseId: Int) {
+        self.courseId = courseId
+        
+        // Initialize queries with filter for specific course
+        let wrongQuestionPredicate = #Predicate<WrongQuestion> {
+            $0.courseId == courseId
+        }
+        self._wrongQuestions = Query(filter: wrongQuestionPredicate)
+        
+        let statsPredicate = #Predicate<StudyStatistics> {
+            $0.courseId == courseId
+        }
+        self._allStatistics = Query(filter: statsPredicate)
+    }
+    
+    // Computed property to get or create statistics for current course
+    private var statistics: StudyStatistics {
+        // Find statistics for current course
+        if let existing = allStatistics.first {
+            return existing
+        } else {
+            // Create default statistics for this course if none exist
+            let newStats = StudyStatistics(courseId: courseId)
+            modelContext.insert(newStats)
+            try? modelContext.save()
+            return newStats
+        }
+    }
     
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Countdown Section
-                    CountdownCard(timeRemaining: timeRemaining)
-                        .padding(.horizontal)
-                        .padding(.top, 8)
-                    
-                    // Study Statistics Section
-                    StudyStatisticsCard(
-                        practiceQuestions: practiceQuestions,
-                        averageAccuracy: averageAccuracy,
-                        studyDuration: studyDuration,
-                        completedExams: completedExams,
-                        errorCount: wrongQuestions.count
-                    )
+        ScrollView {
+            VStack(spacing: 20) {
+                // Countdown Section
+                CountdownCard(timeRemaining: timeRemaining)
                     .padding(.horizontal)
-                    .padding(.bottom, 20)
-                }
+                    .padding(.top, 8)
+                
+                // Study Statistics Section
+                StudyStatisticsCard(
+                    practiceQuestions: statistics.practiceQuestions,
+                    averageAccuracy: statistics.averageAccuracy,
+                    studyDuration: statistics.studyDuration,
+                    completedExams: statistics.completedExams,
+                    errorCount: wrongQuestions.count
+                )
+                .padding(.horizontal)
+                .padding(.bottom, 20)
             }
-            .background(Color(UIColor.systemGroupedBackground))
-            .navigationTitle("首页")
         }
+        .background(Color(UIColor.systemGroupedBackground))
+        .navigationTitle("首页")
         .onAppear {
             startTimer()
         }

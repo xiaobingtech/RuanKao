@@ -14,6 +14,6 @@ struct RuanKaoApp: App {
         WindowGroup {
             AppRootView()
         }
-        .modelContainer(for: WrongQuestion.self)
+        .modelContainer(for: [WrongQuestion.self, StudyStatistics.self])
     }
 }

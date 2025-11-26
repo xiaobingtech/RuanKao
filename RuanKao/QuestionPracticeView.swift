@@ -672,6 +672,9 @@ struct ExamResultView: View {
         guard !hasSavedWrongQuestions else { return }
         hasSavedWrongQuestions = true
         
+        // Update study statistics
+        updateStatistics()
+        
         // Save or update wrong questions to SwiftData
         for (question, userAnswer) in wrongQuestions {
             // Check if this question already exists
@@ -699,6 +702,44 @@ struct ExamResultView: View {
             } catch {
                 print("❌ Error saving wrong question \(question.id): \(error)")
             }
+        }
+    }
+    
+    private func updateStatistics() {
+        // Get current course ID
+        guard let courseId = UserPreferences.shared.selectedCourseId else {
+            print("❌ No course selected, skipping statistics update")
+            return
+        }
+        
+        // Fetch or create study statistics for this course
+        let predicate = #Predicate<StudyStatistics> { stats in
+            stats.courseId == courseId
+        }
+        let descriptor = FetchDescriptor<StudyStatistics>(predicate: predicate)
+        
+        do {
+            let allStats = try modelContext.fetch(descriptor)
+            let statistics: StudyStatistics
+            
+            if let existing = allStats.first {
+                statistics = existing
+            } else {
+                statistics = StudyStatistics(courseId: courseId)
+                modelContext.insert(statistics)
+            }
+            
+            // Update statistics - this is a simulated exam
+            statistics.recordExam(
+                totalQuestions: totalQuestions,
+                correctCount: correctCount,
+                duration: 0 // We don't track duration yet
+            )
+            
+            try modelContext.save()
+            print("✅ Updated study statistics for course \(courseId): \(statistics.practiceQuestions) questions, \(statistics.completedExams) exams")
+        } catch {
+            print("❌ Error updating statistics: \(error)")
         }
     }
 }

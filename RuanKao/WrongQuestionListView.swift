@@ -9,8 +9,29 @@ import SwiftUI
 import SwiftData
 
 struct WrongQuestionListView: View {
+    @ObservedObject private var userPreferences = UserPreferences.shared
+    
+    var body: some View {
+        if let courseId = userPreferences.selectedCourseId {
+            WrongQuestionListContentView(courseId: courseId)
+        } else {
+            ContentUnavailableView("请先选择课程", systemImage: "book.closed")
+        }
+    }
+}
+
+struct WrongQuestionListContentView: View {
+    let courseId: Int
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \WrongQuestion.lastWrongDate, order: .reverse) private var wrongQuestions: [WrongQuestion]
+    @Query private var wrongQuestions: [WrongQuestion]
+    
+    init(courseId: Int) {
+        self.courseId = courseId
+        let predicate = #Predicate<WrongQuestion> {
+            $0.courseId == courseId
+        }
+        self._wrongQuestions = Query(filter: predicate, sort: \.lastWrongDate, order: .reverse)
+    }
     
     var body: some View {
         ZStack {
@@ -42,8 +63,9 @@ struct WrongQuestionListView: View {
     private var emptyStateView: some View {
         VStack(spacing: 16) {
             Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.green)
+            // ... (rest of the view remains the same)
+            .font(.system(size: 60))
+            .foregroundColor(.green)
             
             Text("暂无错题")
                 .font(.system(size: 18, weight: .semibold))
