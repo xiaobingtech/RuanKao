@@ -1,30 +1,29 @@
 //
-//  ComprehensiveQuestionPracticeView.swift
+//  WrongQuestionPracticeView.swift
 //  RuanKao
 //
-//  Created by fandong on 2025/11/25.
+//  Created by fandong on 2025/11/26.
 //
 
 import SwiftUI
 import SwiftData
 
-// MARK: - Comprehensive Question Practice View
-struct ComprehensiveQuestionPracticeView: View {
-    let year: String
-    let batch: String
-    let practiceMode: PracticeMode
-    let courseId: Int
+struct WrongQuestionPracticeView: View {
+    let wrongQuestions: [WrongQuestion]
+    let startIndex: Int
     
     @Environment(\.dismiss) var dismiss
-    @State private var questions: [Question] = []
-    @State private var currentQuestionIndex: Int = 0
-    @State private var userAnswers: [String: String] = [:] // questionId: selectedAnswer
-    @State private var showExamResult = false
-    @State private var isLoading = true
+    @State private var currentQuestionIndex: Int
     
-    var currentQuestion: Question? {
-        guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
-        return questions[currentQuestionIndex]
+    init(wrongQuestions: [WrongQuestion], startIndex: Int) {
+        self.wrongQuestions = wrongQuestions
+        self.startIndex = startIndex
+        _currentQuestionIndex = State(initialValue: startIndex)
+    }
+    
+    var currentQuestion: WrongQuestion? {
+        guard !wrongQuestions.isEmpty, currentQuestionIndex < wrongQuestions.count else { return nil }
+        return wrongQuestions[currentQuestionIndex]
     }
     
     var isFirstQuestion: Bool {
@@ -32,65 +31,33 @@ struct ComprehensiveQuestionPracticeView: View {
     }
     
     var isLastQuestion: Bool {
-        currentQuestionIndex == questions.count - 1
-    }
-    
-    var correctCount: Int {
-        userAnswers.filter { questionId, answer in
-            questions.first(where: { $0.id == questionId })?.answer == answer
-        }.count
+        currentQuestionIndex == wrongQuestions.count - 1
     }
     
     var body: some View {
-        ZStack {
-            if isLoading {
-                ProgressView("加载中...")
-            } else if showExamResult {
-                ExamResultView(
-                    totalQuestions: questions.count,
-                    correctCount: correctCount,
-                    wrongQuestions: getWrongQuestions(),
-                    onDismiss: {
-                        dismiss()
-                    }
-                )
-            } else {
-                questionContentView
-            }
-        }
-        .navigationTitle("\(year)\(batch)")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(showExamResult)
-        .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            loadQuestions()
-        }
-    }
-    
-    private var questionContentView: some View {
         ScrollView {
             VStack(spacing: 24) {
                 if let question = currentQuestion {
                     // Progress Indicator
                     HStack {
-                        Text("\(currentQuestionIndex + 1)/\(questions.count)")
+                        Text("\(currentQuestionIndex + 1)/\(wrongQuestions.count)")
                             .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
                         
                         Spacer()
                         
-                        if practiceMode == .simulation {
-                            HStack(spacing: 4) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
-                                Text("\(correctCount)")
-                                
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.red)
-                                Text("\(userAnswers.count - correctCount)")
-                            }
-                            .font(.system(size: 14, weight: .medium))
+                        // Wrong count badge
+                        HStack(spacing: 4) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 12))
+                            Text("错误\(question.wrongCount)次")
+                                .font(.system(size: 13, weight: .medium))
                         }
+                        .foregroundColor(.red)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(Color.red.opacity(0.1))
+                        .cornerRadius(8)
                     }
                     .padding(.horizontal)
                     .padding(.top, 16)
@@ -144,48 +111,32 @@ struct ComprehensiveQuestionPracticeView: View {
                     
                     // Options
                     VStack(spacing: 12) {
-                        OptionButton(
+                        WrongQuestionOptionView(
                             option: "A",
-                            text: question.A,
-                            isSelected: userAnswers[question.id] == "A",
-                            isCorrect: question.answer == "A",
-                            showAnswer: practiceMode == .memorization,
-                            onTap: {
-                                selectAnswer(questionId: question.id, answer: "A")
-                            }
+                            text: question.optionA,
+                            isUserAnswer: question.userAnswer == "A",
+                            isCorrect: question.correctAnswer == "A"
                         )
                         
-                        OptionButton(
+                        WrongQuestionOptionView(
                             option: "B",
-                            text: question.B,
-                            isSelected: userAnswers[question.id] == "B",
-                            isCorrect: question.answer == "B",
-                            showAnswer: practiceMode == .memorization,
-                            onTap: {
-                                selectAnswer(questionId: question.id, answer: "B")
-                            }
+                            text: question.optionB,
+                            isUserAnswer: question.userAnswer == "B",
+                            isCorrect: question.correctAnswer == "B"
                         )
                         
-                        OptionButton(
+                        WrongQuestionOptionView(
                             option: "C",
-                            text: question.C,
-                            isSelected: userAnswers[question.id] == "C",
-                            isCorrect: question.answer == "C",
-                            showAnswer: practiceMode == .memorization,
-                            onTap: {
-                                selectAnswer(questionId: question.id, answer: "C")
-                            }
+                            text: question.optionC,
+                            isUserAnswer: question.userAnswer == "C",
+                            isCorrect: question.correctAnswer == "C"
                         )
                         
-                        OptionButton(
+                        WrongQuestionOptionView(
                             option: "D",
-                            text: question.D,
-                            isSelected: userAnswers[question.id] == "D",
-                            isCorrect: question.answer == "D",
-                            showAnswer: practiceMode == .memorization,
-                            onTap: {
-                                selectAnswer(questionId: question.id, answer: "D")
-                            }
+                            text: question.optionD,
+                            isUserAnswer: question.userAnswer == "D",
+                            isCorrect: question.correctAnswer == "D"
                         )
                     }
                     .padding(.horizontal)
@@ -210,10 +161,10 @@ struct ComprehensiveQuestionPracticeView: View {
                         .disabled(isFirstQuestion)
                         
                         if isLastQuestion {
-                            Button(action: finishPractice) {
+                            Button(action: { dismiss() }) {
                                 HStack {
                                     Image(systemName: "checkmark.circle.fill")
-                                    Text(practiceMode == .simulation ? "完成考试" : "完成练习")
+                                    Text("完成练习")
                                 }
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 50)
@@ -255,8 +206,8 @@ struct ComprehensiveQuestionPracticeView: View {
                     }
                     .padding(.horizontal)
                     
-                    // Explanation (for Memorization Mode)
-                    if practiceMode == .memorization && !question.explanation.isEmpty {
+                    // Explanation
+                    if !question.explanation.isEmpty {
                         VStack(alignment: .leading, spacing: 12) {
                             HStack {
                                 Image(systemName: "lightbulb.fill")
@@ -284,22 +235,9 @@ struct ComprehensiveQuestionPracticeView: View {
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
-    }
-    
-    private func loadQuestions() {
-        questions = ExamPaperHelper.loadQuestions(
-            courseId: courseId,
-            category: .comprehensive,
-            year: year,
-            batch: batch
-        )
-        
-        isLoading = false
-        print("Loaded \(questions.count) comprehensive questions")
-    }
-    
-    private func selectAnswer(questionId: String, answer: String) {
-        userAnswers[questionId] = answer
+        .navigationTitle("错题练习")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
     }
     
     private func previousQuestion() {
@@ -311,40 +249,95 @@ struct ComprehensiveQuestionPracticeView: View {
     }
     
     private func nextQuestion() {
-        if currentQuestionIndex < questions.count - 1 {
+        if currentQuestionIndex < wrongQuestions.count - 1 {
             withAnimation {
                 currentQuestionIndex += 1
             }
         }
     }
+}
+
+// MARK: - Wrong Question Option View
+struct WrongQuestionOptionView: View {
+    let option: String
+    let text: String
+    let isUserAnswer: Bool
+    let isCorrect: Bool
     
-    private func finishPractice() {
-        if practiceMode == .simulation {
-            showExamResult = true
+    var backgroundColor: Color {
+        if isCorrect {
+            return Color.green.opacity(0.1)
+        } else if isUserAnswer {
+            return Color.red.opacity(0.1)
         } else {
-            dismiss()
+            return Color(UIColor.secondarySystemGroupedBackground)
         }
     }
     
-    private func getWrongQuestions() -> [(Question, String)] {
-        var wrongQuestions: [(Question, String)] = []
-        for (questionId, userAnswer) in userAnswers {
-            if let question = questions.first(where: { $0.id == questionId }),
-               question.answer != userAnswer {
-                wrongQuestions.append((question, userAnswer))
+    var borderColor: Color {
+        if isCorrect {
+            return Color.green
+        } else if isUserAnswer {
+            return Color.red
+        } else {
+            return Color.gray.opacity(0.2)
+        }
+    }
+    
+    var optionCircleColor: Color {
+        if isCorrect {
+            return Color.green
+        } else if isUserAnswer {
+            return Color.red
+        } else {
+            return Color.gray
+        }
+    }
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            // Option Circle
+            ZStack {
+                Circle()
+                    .fill(optionCircleColor)
+                    .frame(width: 28, height: 28)
+                
+                Text(option)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+            
+            // Option Text
+            Text(text)
+                .font(.system(size: 15, weight: .regular))
+                .foregroundColor(.primary)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            
+            // Status Icon
+            if isCorrect {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.green)
+            } else if isUserAnswer {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.red)
             }
         }
-        return wrongQuestions
+        .padding(16)
+        .background(backgroundColor)
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(borderColor, lineWidth: 2)
+        )
     }
 }
 
 #Preview {
     NavigationStack {
-        ComprehensiveQuestionPracticeView(
-            year: "2016",
-            batch: "第一批",
-            practiceMode: .memorization,
-            courseId: 3
-        )
+        WrongQuestionPracticeView(wrongQuestions: [], startIndex: 0)
+            .modelContainer(for: WrongQuestion.self, inMemory: true)
     }
 }

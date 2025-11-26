@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 // MARK: - Question Model
 struct Question: Codable, Identifiable {
@@ -558,6 +559,9 @@ struct ExamResultView: View {
     let wrongQuestions: [(Question, String)]
     let onDismiss: () -> Void
     
+    @Environment(\.modelContext) private var modelContext
+    @State private var hasSavedWrongQuestions = false
+    
     var score: Int {
         Int((Double(correctCount) / Double(totalQuestions)) * 100)
     }
@@ -658,6 +662,50 @@ struct ExamResultView: View {
             }
         }
         .background(Color(UIColor.systemGroupedBackground))
+        .onAppear {
+            saveWrongQuestions()
+        }
+    }
+    
+    private func saveWrongQuestions() {
+        // Only save once
+        guard !hasSavedWrongQuestions else { return }
+        hasSavedWrongQuestions = true
+        
+        print("💾 Starting to save \(wrongQuestions.count) wrong questions to SwiftData")
+        
+        // Import SwiftData context
+        for (question, userAnswer) in wrongQuestions {
+            // Check if this question already exists
+            let predicate = #Predicate<WrongQuestion> { wrongQuestion in
+                wrongQuestion.questionId == question.id
+            }
+            
+            let descriptor = FetchDescriptor<WrongQuestion>(predicate: predicate)
+            
+            do {
+                let existingQuestions = try modelContext.fetch(descriptor)
+                
+                if let existing = existingQuestions.first {
+                    // Update existing wrong question
+                    existing.wrongCount += 1
+                    existing.lastWrongDate = Date()
+                    existing.userAnswer = userAnswer
+                    print("✅ Updated wrong question: \(question.id), wrongCount: \(existing.wrongCount)")
+                } else {
+                    // Create new wrong question
+                    let wrongQuestion = WrongQuestion(from: question, userAnswer: userAnswer)
+                    modelContext.insert(wrongQuestion)
+                    print("✅ Inserted new wrong question: \(question.id)")
+                }
+                
+                try modelContext.save()
+            } catch {
+                print("❌ Error saving wrong question \(question.id): \(error)")
+            }
+        }
+        
+        print("💾 Finished saving wrong questions")
     }
 }
 

@@ -6,18 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
     // Countdown timer state
     @State private var timeRemaining: TimeInterval = 0
     @State private var timer: Timer? = nil
     
+    // SwiftData query for wrong questions
+    @Query private var wrongQuestions: [WrongQuestion]
+    
     // Study statistics (mock data, can be replaced with actual data from UserDefaults or database)
     @State private var practiceQuestions: Int = 1234
     @State private var averageAccuracy: Double = 78.5
     @State private var studyDuration: TimeInterval = 14580 // in seconds
     @State private var completedExams: Int = 15
-    @State private var errorCount: Int = 342
     
     var body: some View {
         NavigationStack {
@@ -34,7 +37,7 @@ struct HomeView: View {
                         averageAccuracy: averageAccuracy,
                         studyDuration: studyDuration,
                         completedExams: completedExams,
-                        errorCount: errorCount
+                        errorCount: wrongQuestions.count
                     )
                     .padding(.horizontal)
                     .padding(.bottom, 20)
@@ -45,6 +48,7 @@ struct HomeView: View {
         }
         .onAppear {
             startTimer()
+            print("🏠 HomeView: Found \(wrongQuestions.count) wrong questions")
         }
         .onDisappear {
             stopTimer()
@@ -263,13 +267,16 @@ struct StudyStatisticsCard: View {
                     )
                 }
                 
-                // Error count (full width)
-                StatisticItemView(
-                    icon: "exclamationmark.triangle.fill",
-                    title: "错题总数",
-                    value: "\(errorCount)",
-                    color: .red
-                )
+                // Error count (full width, clickable)
+                NavigationLink(destination: WrongQuestionListView()) {
+                    StatisticItemView(
+                        icon: "exclamationmark.triangle.fill",
+                        title: "错题总数",
+                        value: "\(errorCount)",
+                        color: .red
+                    )
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
         .padding(20)

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct RuanKaoApp: App {
@@ -13,5 +14,6 @@ struct RuanKaoApp: App {
         WindowGroup {
             AppRootView()
         }
+        .modelContainer(for: WrongQuestion.self)
     }
 }
