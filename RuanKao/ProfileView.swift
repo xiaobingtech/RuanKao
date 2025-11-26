@@ -20,7 +20,12 @@ struct ProfileView: View {
                         userEmail: userPreferences.userEmail
                     )
                         .padding(.top, 20)
-                        .padding(.bottom, 32)
+                        .padding(.bottom, 20)
+                    
+                    // Course Switch Card
+                    CourseSwitchCard(userPreferences: userPreferences)
+                        .padding(.horizontal)
+                        .padding(.bottom, 24)
                     
                     // Favorites and Settings List
                     VStack(spacing: 16) {
@@ -213,4 +218,63 @@ struct ProfileListItem: View {
 
 #Preview {
     ProfileView()
+}
+
+// MARK: - Course Switch Card
+struct CourseSwitchCard: View {
+    @ObservedObject var userPreferences: UserPreferences
+    
+    var body: some View {
+        Button(action: {
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
+            
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                if userPreferences.isAdvancedCourse {
+                    userPreferences.selectIntermediateCourse()
+                } else {
+                    userPreferences.selectAdvancedCourse()
+                }
+            }
+        }) {
+            HStack {
+                ZStack {
+                    Circle()
+                        .fill(Color.blue.opacity(0.1))
+                        .frame(width: 40, height: 40)
+                    
+                    Image(systemName: "arrow.triangle.2.circlepath")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundColor(.blue)
+                }
+                
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("当前课程")
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(.secondary)
+                    
+                    Text(userPreferences.courseDisplayName)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.primary)
+                }
+                
+                Spacer()
+                
+                HStack(spacing: 4) {
+                    Text("切换")
+                        .font(.system(size: 14, weight: .medium))
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                }
+                .foregroundColor(.secondary)
+            }
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+                    .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 4)
+            )
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
 }
