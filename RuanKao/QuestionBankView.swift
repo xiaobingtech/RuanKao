@@ -121,8 +121,8 @@ struct ChapterQuestionBankSection: View {
                 
                 FeatureRow(
                     icon: "slider.horizontal.3",
-                    title: "三种练习模式",
-                    description: "顺序练习/背题模式/模拟考试",
+                    title: "两种练习模式",
+                    description: "背题模式/模拟考试",
                     color: .orange
                 )
             }

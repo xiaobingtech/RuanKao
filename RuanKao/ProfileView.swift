@@ -16,7 +16,7 @@ struct ProfileView: View {
                 VStack(spacing: 0) {
                     // Avatar and Nickname Section
                     ProfileHeaderSection(
-                        userName: userPreferences.userFullName ?? "软考学员",
+                        userName: userPreferences.userFullName ?? "项网学员",
                         userEmail: userPreferences.userEmail
                     )
                         .padding(.top, 20)

@@ -81,11 +81,35 @@ struct EssayPracticeView: View {
                             .foregroundColor(.primary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
-                    .padding(20)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color(UIColor.secondarySystemGroupedBackground))
-                    .cornerRadius(12)
-                    .padding(.horizontal)
+                    
+                    if let url = question.tiganPicUrl {
+                        AsyncImage(url: url) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .scaledToFit()
+                                    .cornerRadius(8)
+                                    .frame(maxWidth: .infinity)
+                            case .failure:
+                                HStack {
+                                    Image(systemName: "exclamationmark.triangle")
+                                    Text("图片加载失败")
+                                }
+                                .font(.caption)
+                                .foregroundColor(.red)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                        .frame(maxHeight: 300)
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
+                    }
                     
                     // Explanation (解析)
                     if !question.explanation.isEmpty {

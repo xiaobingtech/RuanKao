@@ -84,6 +84,12 @@ struct Question: Codable, Identifiable {
         // If all fail, return empty string
         return ""
     }
+    
+    var tiganPicUrl: URL? {
+        guard !tiganPic.isEmpty else { return nil }
+        let baseUrl = "https://mp-1af92f1c-94c6-441d-86c3-3a0c66fb0618.cdn.bspapp.com/tiku"
+        return URL(string: "\(baseUrl)/\(courseId)/\(tiganPic)")
+    }
 }
 
 struct QuestionResponse: Codable {
@@ -194,6 +200,34 @@ struct QuestionPracticeView: View {
                                 .font(.system(size: 16, weight: .regular))
                                 .foregroundColor(.primary)
                                 .fixedSize(horizontal: false, vertical: true)
+                        }
+                        
+                        if let url = question.tiganPicUrl {
+                            AsyncImage(url: url) { phase in
+                                switch phase {
+                                case .empty:
+                                    ProgressView()
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFit()
+                                        .cornerRadius(8)
+                                        .frame(maxWidth: .infinity)
+                                case .failure:
+                                    HStack {
+                                        Image(systemName: "exclamationmark.triangle")
+                                        Text("图片加载失败")
+                                    }
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                            .frame(maxHeight: 300)
+                            .padding(.top, 8)
                         }
                     }
                     .padding(20)
@@ -666,6 +700,33 @@ struct WrongQuestionCard: View {
                 .font(.system(size: 15, weight: .regular))
                 .foregroundColor(.primary)
                 .fixedSize(horizontal: false, vertical: true)
+            
+            if let url = question.tiganPicUrl {
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                            .frame(maxWidth: .infinity, alignment: .center)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .cornerRadius(8)
+                            .frame(maxWidth: .infinity)
+                    case .failure:
+                        HStack {
+                            Image(systemName: "exclamationmark.triangle")
+                            Text("图片加载失败")
+                        }
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                .frame(maxHeight: 200)
+            }
             
             // User's Answer
             HStack {
