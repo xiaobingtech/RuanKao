@@ -48,7 +48,6 @@ struct HomeView: View {
         }
         .onAppear {
             startTimer()
-            print("🏠 HomeView: Found \(wrongQuestions.count) wrong questions")
         }
         .onDisappear {
             stopTimer()

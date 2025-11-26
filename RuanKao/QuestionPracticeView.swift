@@ -672,9 +672,7 @@ struct ExamResultView: View {
         guard !hasSavedWrongQuestions else { return }
         hasSavedWrongQuestions = true
         
-        print("💾 Starting to save \(wrongQuestions.count) wrong questions to SwiftData")
-        
-        // Import SwiftData context
+        // Save or update wrong questions to SwiftData
         for (question, userAnswer) in wrongQuestions {
             // Check if this question already exists
             let predicate = #Predicate<WrongQuestion> { wrongQuestion in
@@ -691,12 +689,10 @@ struct ExamResultView: View {
                     existing.wrongCount += 1
                     existing.lastWrongDate = Date()
                     existing.userAnswer = userAnswer
-                    print("✅ Updated wrong question: \(question.id), wrongCount: \(existing.wrongCount)")
                 } else {
                     // Create new wrong question
                     let wrongQuestion = WrongQuestion(from: question, userAnswer: userAnswer)
                     modelContext.insert(wrongQuestion)
-                    print("✅ Inserted new wrong question: \(question.id)")
                 }
                 
                 try modelContext.save()
@@ -704,8 +700,6 @@ struct ExamResultView: View {
                 print("❌ Error saving wrong question \(question.id): \(error)")
             }
         }
-        
-        print("💾 Finished saving wrong questions")
     }
 }
 

@@ -37,12 +37,6 @@ struct WrongQuestionListView: View {
         .navigationTitle("错题本")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            print("📚 WrongQuestionListView: Found \(wrongQuestions.count) wrong questions")
-            for (index, wq) in wrongQuestions.prefix(3).enumerated() {
-                print("  - Question \(index + 1): \(wq.questionId), seq: \(wq.seq), tigan: \(wq.tigan.prefix(30))...")
-            }
-        }
     }
     
     private var emptyStateView: some View {
