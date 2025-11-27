@@ -10,9 +10,22 @@
 		CB2540612ED31F5E0046A9FD /* RuanKao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RuanKao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CB4EEA1F2ED88A86009EB3DB /* Exceptions for "RuanKao" folder in "RuanKao" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = CB2540602ED31F5E0046A9FD /* RuanKao */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		CB2540632ED31F5E0046A9FD /* RuanKao */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CB4EEA1F2ED88A86009EB3DB /* Exceptions for "RuanKao" folder in "RuanKao" target */,
+			);
 			path = RuanKao;
 			sourceTree = "<group>";
 		};
@@ -257,6 +270,7 @@
 				DEVELOPMENT_TEAM = F9N98X7P4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RuanKao/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "软考";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -293,6 +307,7 @@
 				DEVELOPMENT_TEAM = F9N98X7P4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = RuanKao/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "软考";
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -133,8 +133,16 @@ struct ComprehensiveExamSelectionView: View {
                 Spacer()
             }
             
-            // Batch Selection
-            HStack(spacing: 12) {
+            // Batch Selection (Grid layout, max 4 per row)
+            LazyVGrid(
+                columns: [
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12),
+                    GridItem(.flexible(), spacing: 12)
+                ],
+                spacing: 12
+            ) {
                 ForEach(yearGroup.batches, id: \.self) { batch in
                     batchSelectionCard(year: yearGroup.year, batch: batch)
                 }
@@ -275,7 +283,9 @@ struct ComprehensiveExamSelectionView: View {
             return
         }
         
+        // Load and sort by year in descending order (newest first)
         yearGroups = ExamPaperHelper.getYearGroups(courseId: courseId, category: .comprehensive)
+            .sorted { Int($0.year) ?? 0 > Int($1.year) ?? 0 }
         isLoading = false
     }
 }
