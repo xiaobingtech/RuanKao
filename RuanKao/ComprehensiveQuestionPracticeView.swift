@@ -21,6 +21,7 @@ struct ComprehensiveQuestionPracticeView: View {
     @State private var userAnswers: [String: String] = [:] // questionId: selectedAnswer
     @State private var showExamResult = false
     @State private var isLoading = true
+    @State private var startTime: Date = Date()
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -50,6 +51,7 @@ struct ComprehensiveQuestionPracticeView: View {
                     totalQuestions: questions.count,
                     correctCount: correctCount,
                     wrongQuestions: getWrongQuestions(),
+                    duration: Date().timeIntervalSince(startTime),
                     onDismiss: {
                         dismiss()
                     }
@@ -294,6 +296,7 @@ struct ComprehensiveQuestionPracticeView: View {
             batch: batch
         )
         
+        startTime = Date() // Reset start time when questions are loaded
         isLoading = false
         print("Loaded \(questions.count) comprehensive questions")
     }
