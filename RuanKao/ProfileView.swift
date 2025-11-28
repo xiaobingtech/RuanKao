@@ -17,8 +17,7 @@ struct ProfileView: View {
                 VStack(spacing: 0) {
                     // Avatar and Nickname Section
                     ProfileHeaderSection(
-                        userName: userPreferences.userFullName ?? "项网学员",
-                        userEmail: userPreferences.userEmail
+                        userName: userPreferences.username ?? "项网学员"
                     )
                         .padding(.top, 20)
                         .padding(.bottom, 20)
@@ -80,7 +79,6 @@ struct ProfileView: View {
 // MARK: - Profile Header Section
 struct ProfileHeaderSection: View {
     let userName: String
-    let userEmail: String?
     
     var body: some View {
         VStack(spacing: 16) {
@@ -109,13 +107,6 @@ struct ProfileHeaderSection: View {
             Text(userName)
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.primary)
-            
-            // Email (if available)
-            if let email = userEmail {
-                Text(email)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(.secondary)
-            }
         }
     }
 }

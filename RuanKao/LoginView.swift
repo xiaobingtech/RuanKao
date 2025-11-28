@@ -7,9 +7,11 @@
 
 import SwiftUI
 import AuthenticationServices
+import SwiftData
 
 struct LoginView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.modelContext) private var modelContext
     @StateObject private var userPreferences = UserPreferences.shared
     
     var body: some View {
@@ -74,19 +76,27 @@ struct LoginView: View {
                                 
                                 // Extract user credentials
                                 if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                                    let fullName: String?
-                                    if let givenName = appleIDCredential.fullName?.givenName,
-                                       let familyName = appleIDCredential.fullName?.familyName {
-                                        fullName = "\(familyName)\(givenName)"  // Chinese name format
-                                    } else {
-                                        fullName = nil
+                                    // Get the user ID from Apple Sign-In
+                                    let userId = appleIDCredential.user
+                                    
+                                    // Generate username: "项网学员" + last 4 digits of user ID
+                                    let lastFourDigits = String(userId.suffix(4))
+                                    let username = "项网学员\(lastFourDigits)"
+                                    
+                                    // Save to UserDefaults
+                                    userPreferences.setUserData(userId: userId, username: username)
+                                    print("Saved user data - User ID: \(userId), Username: \(username)")
+                                    
+                                    // Save to SwiftData for iCloud sync
+                                    let user = User(userId: userId, username: username)
+                                    modelContext.insert(user)
+                                    
+                                    do {
+                                        try modelContext.save()
+                                        print("User data saved to SwiftData successfully")
+                                    } catch {
+                                        print("Failed to save user data to SwiftData: \(error.localizedDescription)")
                                     }
-                                    
-                                    let email = appleIDCredential.email
-                                    
-                                    // Save user data
-                                    userPreferences.setUserData(fullName: fullName, email: email)
-                                    print("Saved user data - Name: \(fullName ?? "N/A"), Email: \(email ?? "N/A")")
                                     
                                     // Set login status
                                     userPreferences.login()

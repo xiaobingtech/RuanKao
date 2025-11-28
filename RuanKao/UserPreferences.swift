@@ -27,16 +27,16 @@ class UserPreferences: ObservableObject {
         }
     }
     
-    @Published var userFullName: String? {
+    @Published var userId: String? {
         didSet {
-            UserDefaults.standard.set(userFullName, forKey: "userFullName")
+            UserDefaults.standard.set(userId, forKey: "userId")
             UserDefaults.standard.synchronize()
         }
     }
     
-    @Published var userEmail: String? {
+    @Published var username: String? {
         didSet {
-            UserDefaults.standard.set(userEmail, forKey: "userEmail")
+            UserDefaults.standard.set(username, forKey: "username")
             UserDefaults.standard.synchronize()
         }
     }
@@ -76,8 +76,8 @@ class UserPreferences: ObservableObject {
         }
         
         self.selectedCourseName = UserDefaults.standard.string(forKey: "selectedCourseName")
-        self.userFullName = UserDefaults.standard.string(forKey: "userFullName")
-        self.userEmail = UserDefaults.standard.string(forKey: "userEmail")
+        self.userId = UserDefaults.standard.string(forKey: "userId")
+        self.username = UserDefaults.standard.string(forKey: "username")
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
     }
     
@@ -96,14 +96,14 @@ class UserPreferences: ObservableObject {
     }
     
     // MARK: - User Data
-    func setUserData(fullName: String?, email: String?) {
-        self.userFullName = fullName
-        self.userEmail = email
+    func setUserData(userId: String?, username: String?) {
+        self.userId = userId
+        self.username = username
     }
     
     func clearUserData() {
-        self.userFullName = nil
-        self.userEmail = nil
+        self.userId = nil
+        self.username = nil
     }
     
     // MARK: - Authentication
@@ -118,8 +118,8 @@ class UserPreferences: ObservableObject {
     func clearAll() {
         self.selectedCourseId = nil
         self.selectedCourseName = nil
-        self.userFullName = nil
-        self.userEmail = nil
+        self.userId = nil
+        self.username = nil
         self.isLoggedIn = false
     }
 }
