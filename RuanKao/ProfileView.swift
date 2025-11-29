@@ -32,7 +32,7 @@ struct ProfileView: View {
                         // My Favorites Section
                         ProfileListSection(title: "会员") {
                             ProfileListItem(
-                                icon: "star.fill",
+                                icon: "crown.fill",
                                 title: "成为项网会员",
                                 iconColor: .orange,
                             )
@@ -44,7 +44,7 @@ struct ProfileView: View {
                                 .padding(.leading, 56)
                             
                             ProfileListItem(
-                                icon: "questionmark.circle.fill",
+                                icon: "envelope.fill",
                                 title: "反馈意见",
                                 iconColor: .blue
                             )
@@ -56,6 +56,11 @@ struct ProfileView: View {
                                 icon: "info.circle.fill",
                                 title: "关于我们",
                                 iconColor: .gray
+                            )
+                            ProfileListItem(
+                                icon: "rectangle.portrait.and.arrow.right",
+                                title: "退出登录",
+                                iconColor: .red
                             )
                         }
                     }
