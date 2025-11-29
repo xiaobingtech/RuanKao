@@ -349,7 +349,7 @@ struct EditProfileView: View {
                             .foregroundColor(.white)
                         Spacer()
                     }
-                    .padding(.vertical, 8)
+                    .padding(.vertical, 14)
                     .background(
                         RoundedRectangle(cornerRadius: 10)
                             .fill(
