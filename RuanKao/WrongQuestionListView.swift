@@ -15,7 +15,8 @@ struct WrongQuestionListView: View {
         if let courseId = userPreferences.selectedCourseId {
             WrongQuestionListContentView(courseId: courseId)
         } else {
-            ContentUnavailableView("请先选择课程", systemImage: "book.closed")
+            WrongQuestionListContentView(courseId: 4)
+//            ContentUnavailableView("请先选择课程", systemImage: "book.closed")
         }
     }
 }
@@ -77,7 +78,7 @@ struct WrongQuestionListContentView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
         }
-        .padding(.top, 60)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
