@@ -366,6 +366,7 @@ struct EditProfileView: View {
         }
         .navigationTitle("编辑资料")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(.hidden, for: .tabBar)
         .onAppear {
             editedUsername = userPreferences.username ?? "项网学员"
         }

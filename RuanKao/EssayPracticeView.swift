@@ -81,6 +81,7 @@ struct EssayPracticeView: View {
                             .foregroundColor(.primary)
                             .fixedSize(horizontal: false, vertical: true)
                     }
+                    .padding(.horizontal)
                     
                     if let url = question.tiganPicUrl {
                         AsyncImage(url: url) { phase in
@@ -120,6 +121,34 @@ struct EssayPracticeView: View {
                                 Text("答案解析")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(.primary)
+                            }
+                            
+                            if let url = question.explanationPicUrl {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(maxWidth: .infinity, alignment: .center)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .cornerRadius(8)
+                                            .frame(maxWidth: .infinity)
+                                    case .failure:
+                                        HStack {
+                                            Image(systemName: "exclamationmark.triangle")
+                                            Text("图片加载失败")
+                                        }
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                                .frame(maxHeight: 300)
+                                .padding(.top, 8)
                             }
                             
                             Text(question.explanation)

@@ -99,4 +99,10 @@ final class WrongQuestion {
         let baseUrl = "https://mp-1af92f1c-94c6-441d-86c3-3a0c66fb0618.cdn.bspapp.com/tiku"
         return URL(string: "\(baseUrl)/\(courseId)/\(tiganPic)")
     }
+    
+    var explanationPicUrl: URL? {
+        guard !explanationPic.isEmpty else { return nil }
+        let baseUrl = "https://mp-1af92f1c-94c6-441d-86c3-3a0c66fb0618.cdn.bspapp.com/tiku"
+        return URL(string: "\(baseUrl)/\(courseId)/\(explanationPic)")
+    }
 }

@@ -217,6 +217,34 @@ struct WrongQuestionPracticeView: View {
                                     .foregroundColor(.primary)
                             }
                             
+                            if let url = question.explanationPicUrl {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(maxWidth: .infinity, alignment: .center)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .cornerRadius(8)
+                                            .frame(maxWidth: .infinity)
+                                    case .failure:
+                                        HStack {
+                                            Image(systemName: "exclamationmark.triangle")
+                                            Text("图片加载失败")
+                                        }
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                                .frame(maxHeight: 300)
+                                .padding(.top, 8)
+                            }
+                            
                             Text(question.explanation)
                                 .font(.system(size: 15, weight: .regular))
                                 .foregroundColor(.secondary)
