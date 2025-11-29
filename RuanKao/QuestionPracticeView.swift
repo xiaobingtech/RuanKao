@@ -116,7 +116,6 @@ struct QuestionPracticeView: View {
     @State private var userAnswers: [String: String] = [:] // questionId: selectedAnswer
     @State private var showExamResult = false
     @State private var isLoading = true
-    @State private var startTime: Date = Date()
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -146,7 +145,6 @@ struct QuestionPracticeView: View {
                     totalQuestions: questions.count,
                     correctCount: correctCount,
                     wrongQuestions: getWrongQuestions(),
-                    duration: Date().timeIntervalSince(startTime),
                     onDismiss: {
                         dismiss()
                     }
@@ -413,7 +411,6 @@ struct QuestionPracticeView: View {
             let data = try Data(contentsOf: URL(fileURLWithPath: fullPath))
             let response = try JSONDecoder().decode(QuestionResponse.self, from: data)
             self.questions = response.data.data
-            self.startTime = Date() // Reset start time when questions are loaded
             isLoading = false
             print("Loaded \(questions.count) questions")
         } catch {
@@ -560,7 +557,6 @@ struct ExamResultView: View {
     let totalQuestions: Int
     let correctCount: Int
     let wrongQuestions: [(Question, String)]
-    let duration: TimeInterval
     let onDismiss: () -> Void
     
     @Environment(\.modelContext) private var modelContext
@@ -737,7 +733,7 @@ struct ExamResultView: View {
             statistics.recordExam(
                 totalQuestions: totalQuestions,
                 correctCount: correctCount,
-                duration: duration
+                duration: 0 // We don't track duration yet
             )
             
             try modelContext.save()
