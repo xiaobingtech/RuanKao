@@ -15,6 +15,7 @@ struct ComprehensiveExamSelectionView: View {
     @State private var selectedYear: String?
     @State private var selectedBatch: String?
     @State private var selectedMode: PracticeMode?
+    @State private var showModeSelection = false
     
     var isConfirmEnabled: Bool {
         selectedYear != nil && selectedBatch != nil && selectedMode != nil
@@ -43,6 +44,11 @@ struct ComprehensiveExamSelectionView: View {
         .navigationTitle("综合知识")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
+        .overlay {
+            if showModeSelection {
+                modeSelectionPopup
+            }
+        }
         .onAppear {
             loadYearGroups()
         }
@@ -98,24 +104,7 @@ struct ComprehensiveExamSelectionView: View {
                 yearSectionView(yearGroup: yearGroup)
                     .padding(.horizontal)
             }
-            
-            // Practice Mode Selection
-            if selectedYear != nil && selectedBatch != nil {
-                practiceModeSection
-                    .padding(.horizontal)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-            }
-            
-            // Confirm Button
-            if selectedYear != nil && selectedBatch != nil && selectedMode != nil {
-                confirmButton
-                    .padding(.horizontal)
-                    .transition(.opacity.combined(with: .move(edge: .bottom)))
-            }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedYear)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedBatch)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: selectedMode)
     }
     
     private func yearSectionView(yearGroup: YearGroup) -> some View {
@@ -165,6 +154,8 @@ struct ComprehensiveExamSelectionView: View {
                 selectedBatch = batch
                 // Reset mode when changing selection
                 selectedMode = nil
+                // Show mode selection popup
+                showModeSelection = true
             }
         }) {
             VStack(spacing: 8) {
@@ -274,6 +265,133 @@ struct ComprehensiveExamSelectionView: View {
             )
         }
         .disabled(!isConfirmEnabled)
+    }
+    
+    // MARK: - Mode Selection Popup
+    private var modeSelectionPopup: some View {
+        ZStack {
+            // Semi-transparent background
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                        showModeSelection = false
+                    }
+                }
+            
+            // Popup dialog
+            VStack(spacing: 0) {
+                // Header
+                VStack(spacing: 12) {
+                    HStack {
+                        Image(systemName: "square.stack.3d.up")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
+                        
+                        Text("选择练习模式")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.primary)
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                showModeSelection = false
+                            }
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    
+                    if let year = selectedYear, let batch = selectedBatch {
+                        HStack {
+                            Text("\(year)年 · \(batch)")
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(.secondary)
+                            Spacer()
+                        }
+                    }
+                }
+                .padding(20)
+                
+                Divider()
+                
+                // Mode selection
+                VStack(spacing: 12) {
+                    ForEach(PracticeMode.allCases) { mode in
+                        ModeSelectionCard(
+                            mode: mode,
+                            isSelected: selectedMode == mode
+                        ) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                selectedMode = mode
+                            }
+                        }
+                    }
+                }
+                .padding(20)
+                
+                Divider()
+                
+                // Confirm button
+                VStack(spacing: 0) {
+                    if selectedMode != nil {
+                        NavigationLink(
+                            destination: Group {
+                                if let year = selectedYear,
+                                   let batch = selectedBatch,
+                                   let mode = selectedMode,
+                                   let courseId = userPreferences.selectedCourseId {
+                                    ComprehensiveQuestionPracticeView(
+                                        year: year,
+                                        batch: batch,
+                                        practiceMode: mode,
+                                        courseId: courseId
+                                    )
+                                }
+                            }
+                        ) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill")
+                                    .font(.system(size: 18, weight: .semibold))
+                                Text("开始练习")
+                                    .font(.system(size: 17, weight: .semibold))
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 54)
+                            .background(
+                                LinearGradient(
+                                    colors: [
+                                        Color(red: 0.3, green: 0.4, blue: 0.9),
+                                        Color(red: 0.5, green: 0.3, blue: 0.8)
+                                    ],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .foregroundColor(.white)
+                            .cornerRadius(12)
+                            .shadow(
+                                color: Color(red: 0.4, green: 0.35, blue: 0.85).opacity(0.3),
+                                radius: 8, x: 0, y: 4
+                            )
+                        }
+                        .padding(20)
+                    }
+                }
+            }
+            .frame(maxWidth: 380)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(UIColor.secondarySystemGroupedBackground))
+            )
+            .shadow(color: Color.black.opacity(0.2), radius: 20, x: 0, y: 10)
+            .padding(.horizontal, 20)
+            .transition(.scale(scale: 0.9).combined(with: .opacity))
+        }
+        .zIndex(1)
     }
     
     private func loadYearGroups() {

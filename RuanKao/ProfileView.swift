@@ -30,7 +30,7 @@ struct ProfileView: View {
                     // Favorites and Settings List
                     VStack(spacing: 16) {
                         // My Favorites Section
-                        ProfileListSection(title: "我的收藏") {
+                        ProfileListSection(title: "会员") {
                             ProfileListItem(
                                 icon: "star.fill",
                                 title: "成为项网会员",
@@ -45,7 +45,7 @@ struct ProfileView: View {
                             
                             ProfileListItem(
                                 icon: "questionmark.circle.fill",
-                                title: "帮助与反馈",
+                                title: "反馈意见",
                                 iconColor: .blue
                             )
                             
