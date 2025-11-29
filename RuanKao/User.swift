@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 final class User {
-    @Attribute(.unique) var userId: String
-    var username: String
-    var createdAt: Date
+    var userId: String = ""
+    var username: String = ""
+    var createdAt: Date = Date()
     
     init(userId: String, username: String) {
         self.userId = userId

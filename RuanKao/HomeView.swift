@@ -17,7 +17,8 @@ struct HomeView: View {
                 HomeContentView(courseId: courseId)
             } else {
                 // Fallback or empty state if no course selected
-                ContentUnavailableView("请先选择课程", systemImage: "book.closed")
+//                ContentUnavailableView("请先选择课程", systemImage: "book.closed")
+                HomeContentView(courseId: 4)
             }
         }
     }
@@ -70,7 +71,7 @@ struct HomeContentView: View {
         ScrollView {
             VStack(spacing: 20) {
                 // Countdown Section
-                CountdownCard(timeRemaining: timeRemaining)
+                CountdownCard(timeRemaining: timeRemaining, courseId: courseId)
                     .padding(.horizontal)
                     .padding(.top, 8)
                 
@@ -112,7 +113,10 @@ struct HomeContentView: View {
     }
     
     private func updateTimeRemaining() {
-        let targetDate = Calendar.current.date(from: DateComponents(year: 2026, month: 5, day: 24, hour: 9, minute: 0))!
+        // 中项: courseId = 4, 目标日期 2026年11月9日
+        // 高项: courseId = 3, 目标日期 2026年5月24日
+        let (year, month, day) = courseId == 4 ? (2026, 11, 9) : (2026, 5, 24)
+        let targetDate = Calendar.current.date(from: DateComponents(year: year, month: month, day: day, hour: 0, minute: 0))!
         let now = Date()
         timeRemaining = targetDate.timeIntervalSince(now)
     }
@@ -121,6 +125,7 @@ struct HomeContentView: View {
 // MARK: - Countdown Card
 struct CountdownCard: View {
     let timeRemaining: TimeInterval
+    let courseId: Int
     
     private var days: Int {
         Int(timeRemaining / 86400)
@@ -136,6 +141,12 @@ struct CountdownCard: View {
     
     private var seconds: Int {
         Int(timeRemaining.truncatingRemainder(dividingBy: 60))
+    }
+    
+    private var targetDateText: String {
+        // 中项: courseId = 4, 目标日期 2026年11月9日
+        // 高项: courseId = 3, 目标日期 2026年5月24日
+        return courseId == 4 ? "目标日期：2026年11月9日" : "目标日期：2026年5月24日"
     }
     
     var body: some View {
@@ -164,7 +175,7 @@ struct CountdownCard: View {
             
             // Target Date
             HStack {
-                Text("目标日期：2026年5月24日")
+                Text(targetDateText)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(.secondary)
                 

@@ -88,14 +88,25 @@ struct LoginView: View {
                                     print("Saved user data - User ID: \(userId), Username: \(username)")
                                     
                                     // Save to SwiftData for iCloud sync
-                                    let user = User(userId: userId, username: username)
-                                    modelContext.insert(user)
-                                    
+                                    let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
                                     do {
-                                        try modelContext.save()
-                                        print("User data saved to SwiftData successfully")
+                                        let users = try modelContext.fetch(descriptor)
+                                        if let existingUser = users.first {
+                                            print("User already exists in SwiftData: \(existingUser.userId)")
+                                            // Update username if changed
+                                            if existingUser.username != username {
+                                                existingUser.username = username
+                                                try modelContext.save()
+                                                print("Updated username for existing user")
+                                            }
+                                        } else {
+                                            let user = User(userId: userId, username: username)
+                                            modelContext.insert(user)
+                                            try modelContext.save()
+                                            print("New user saved to SwiftData successfully")
+                                        }
                                     } catch {
-                                        print("Failed to save user data to SwiftData: \(error.localizedDescription)")
+                                        print("Failed to handle user data in SwiftData: \(error.localizedDescription)")
                                     }
                                     
                                     // Set login status
