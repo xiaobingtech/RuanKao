@@ -23,7 +23,7 @@ struct FullScreenImageView: View {
                             .font(.system(size: 30))
                             .foregroundColor(.white.opacity(0.7))
                             .padding()
-                            .padding(.top, 40) // Add some top padding for status bar area
+//                            .padding(.top, 40) // Add some top padding for status bar area
                     }
                 }
                 Spacer()

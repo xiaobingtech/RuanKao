@@ -17,6 +17,7 @@ struct EssayPracticeView: View {
     @State private var questions: [Question] = []
     @State private var currentQuestionIndex: Int = 0
     @State private var isLoading = true
+    @State private var selectedImage: ImageItem?
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -44,6 +45,12 @@ struct EssayPracticeView: View {
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
             loadQuestions()
+        }
+        .fullScreenCover(item: $selectedImage) { item in
+            FullScreenImageView(imageUrl: item.url, isPresented: Binding(
+                get: { selectedImage != nil },
+                set: { if !$0 { selectedImage = nil } }
+            ))
         }
     }
     
@@ -110,6 +117,9 @@ struct EssayPracticeView: View {
                         .frame(maxHeight: 300)
                         .padding(.horizontal)
                         .padding(.bottom, 20)
+                        .onTapGesture {
+                            selectedImage = ImageItem(url: url)
+                        }
                     }
                     
                     // Explanation (解析)
@@ -149,6 +159,9 @@ struct EssayPracticeView: View {
                                 }
                                 .frame(maxHeight: 300)
                                 .padding(.top, 8)
+                                .onTapGesture {
+                                    selectedImage = ImageItem(url: url)
+                                }
                             }
                             
                             Text(question.explanation)
