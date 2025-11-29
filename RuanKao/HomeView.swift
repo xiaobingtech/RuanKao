@@ -158,7 +158,7 @@ struct CountdownCard: View {
                     .foregroundColor(.purple)
                 
                 Text("考试倒计时")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -180,8 +180,9 @@ struct CountdownCard: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 16)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
@@ -236,7 +237,7 @@ struct StudyStatisticsCard: View {
                     .foregroundColor(.blue)
                 
                 Text("学习统计")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.primary)
                 
                 Spacer()
@@ -291,8 +292,9 @@ struct StudyStatisticsCard: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 16)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
+                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
