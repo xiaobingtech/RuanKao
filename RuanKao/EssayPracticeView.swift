@@ -100,7 +100,6 @@ struct EssayPracticeView: View {
                                 }
                             }
                             .frame(maxHeight: 300)
-                            .padding(.horizontal)
                             .padding(.bottom, 20)
                             .onTapGesture {
                                 selectedImage = ImageItem(url: url)
