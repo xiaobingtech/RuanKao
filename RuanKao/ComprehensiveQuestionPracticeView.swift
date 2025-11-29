@@ -107,6 +107,36 @@ struct ComprehensiveQuestionPracticeView: View {
                     // Question Stem
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(alignment: .top, spacing: 8) {
+                            if let url = question.tiganPicUrl {
+                                AsyncImage(url: url) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(maxWidth: .infinity, alignment: .center)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .scaledToFit()
+                                            .cornerRadius(8)
+                                            .frame(maxWidth: .infinity)
+                                    case .failure:
+                                        HStack {
+                                            Image(systemName: "exclamationmark.triangle")
+                                            Text("图片加载失败")
+                                        }
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .frame(maxWidth: .infinity, alignment: .center)
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                                .frame(maxHeight: 300)
+                                .padding(.top, 8)
+                                .onTapGesture {
+                                    selectedImage = ImageItem(url: url)
+                                }
+                            }
                             Text("\(question.seq).")
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
@@ -117,36 +147,7 @@ struct ComprehensiveQuestionPracticeView: View {
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                         
-                        if let url = question.tiganPicUrl {
-                            AsyncImage(url: url) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(maxWidth: .infinity, alignment: .center)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .scaledToFit()
-                                        .cornerRadius(8)
-                                        .frame(maxWidth: .infinity)
-                                case .failure:
-                                    HStack {
-                                        Image(systemName: "exclamationmark.triangle")
-                                        Text("图片加载失败")
-                                    }
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-                                    .frame(maxWidth: .infinity, alignment: .center)
-                                @unknown default:
-                                    EmptyView()
-                                }
-                            }
-                            .frame(maxHeight: 300)
-                            .padding(.top, 8)
-                            .onTapGesture {
-                                selectedImage = ImageItem(url: url)
-                            }
-                        }
+                        
                     }
                     .padding(20)
                     .frame(maxWidth: .infinity, alignment: .leading)

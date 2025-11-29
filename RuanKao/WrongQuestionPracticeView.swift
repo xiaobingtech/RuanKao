@@ -65,17 +65,6 @@ struct WrongQuestionPracticeView: View {
                     
                     // Question Stem
                     VStack(alignment: .leading, spacing: 12) {
-                        HStack(alignment: .top, spacing: 8) {
-                            Text("\(question.seq).")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
-                            
-                            Text(question.tigan)
-                                .font(.system(size: 16, weight: .regular))
-                                .foregroundColor(.primary)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        
                         if let url = question.tiganPicUrl {
                             AsyncImage(url: url) { phase in
                                 switch phase {
@@ -106,6 +95,18 @@ struct WrongQuestionPracticeView: View {
                                 selectedImage = ImageItem(url: url)
                             }
                         }
+                        HStack(alignment: .top, spacing: 8) {
+                            Text("\(question.seq).")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
+                            
+                            Text(question.tigan)
+                                .font(.system(size: 16, weight: .regular))
+                                .foregroundColor(.primary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        
+                        
                     }
                     .padding(20)
                     .frame(maxWidth: .infinity, alignment: .leading)
