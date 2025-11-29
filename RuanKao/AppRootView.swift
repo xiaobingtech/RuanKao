@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AppRootView: View {
-    @StateObject private var userPreferences = UserPreferences.shared
+    @ObservedObject private var userPreferences = UserPreferences.shared
     
     var body: some View {
         Group {

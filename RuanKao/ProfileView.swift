@@ -10,17 +10,21 @@ import UIKit
 
 struct ProfileView: View {
     @StateObject private var userPreferences = UserPreferences.shared
+    @State private var showLogoutConfirmation = false
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 0) {
                     // Avatar and Nickname Section
-                    ProfileHeaderSection(
-                        userName: userPreferences.username ?? "项网学员"
-                    )
-                        .padding(.top, 20)
-                        .padding(.bottom, 20)
+                    NavigationLink(destination: EditProfileView(userPreferences: userPreferences)) {
+                        ProfileHeaderSection(
+                            userName: userPreferences.username ?? "项网学员"
+                        )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .padding(.top, 20)
+                    .padding(.bottom, 20)
                     
                     // Course Switch Card
                     CourseSwitchCard(userPreferences: userPreferences)
@@ -57,11 +61,37 @@ struct ProfileView: View {
                                 title: "关于我们",
                                 iconColor: .gray
                             )
-                            ProfileListItem(
-                                icon: "rectangle.portrait.and.arrow.right",
-                                title: "退出登录",
-                                iconColor: .red
-                            )
+                            // Logout button - using direct HStack to avoid nested button issues
+                            HStack(spacing: 16) {
+                                // Icon
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.red.opacity(0.15))
+                                        .frame(width: 40, height: 40)
+                                    
+                                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                                        .font(.system(size: 18, weight: .semibold))
+                                        .foregroundColor(.red)
+                                }
+                                
+                                // Title
+                                Text("退出登录")
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundColor(.primary)
+                                
+                                Spacer()
+                                
+                                // Chevron
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 12)
+                            .background(Color(UIColor.secondarySystemGroupedBackground))
+                            .onTapGesture {
+                                showLogoutConfirmation = true
+                            }
                         }
                     }
                     .padding(.horizontal)
@@ -70,7 +100,24 @@ struct ProfileView: View {
             }
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("我的")
+            .alert("退出登录", isPresented: $showLogoutConfirmation) {
+                Button("取消", role: .cancel) { }
+                Button("退出", role: .destructive) {
+                    performLogout()
+                }
+            } message: {
+                Text("确定要退出登录吗？")
+            }
         }
+    }
+    
+    private func performLogout() {
+        // Clear all user data
+        userPreferences.clearAll()
+        
+        // Provide haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 }
 
@@ -260,5 +307,84 @@ struct CourseSwitchCard: View {
             )
         }
         .buttonStyle(PlainButtonStyle())
+    }
+}
+
+// MARK: - Edit Profile View
+struct EditProfileView: View {
+    @ObservedObject var userPreferences: UserPreferences
+    @Environment(\.dismiss) private var dismiss
+    @State private var editedUsername: String = ""
+    @State private var showingSaveConfirmation = false
+    
+    var body: some View {
+        Form {
+            Section {
+                HStack {
+                    Text("昵称")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.primary)
+                        .frame(width: 60, alignment: .leading)
+                    
+                    TextField("请输入昵称", text: $editedUsername)
+                        .font(.system(size: 16))
+                        .textFieldStyle(PlainTextFieldStyle())
+                }
+                .padding(.vertical, 4)
+            } header: {
+                Text("个人信息")
+            } footer: {
+                Text("设置一个您喜欢的昵称")
+                    .font(.system(size: 13))
+            }
+            
+            Section {
+                Button(action: saveUsername) {
+                    HStack {
+                        Spacer()
+                        Text("保存")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(
+                                editedUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                                ? Color.gray.opacity(0.5)
+                                : Color.blue
+                            )
+                    )
+                }
+                .disabled(editedUsername.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+            }
+        }
+        .navigationTitle("编辑资料")
+        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            editedUsername = userPreferences.username ?? "项网学员"
+        }
+        .alert("保存成功", isPresented: $showingSaveConfirmation) {
+            Button("确定") {
+                dismiss()
+            }
+        } message: {
+            Text("您的昵称已更新")
+        }
+    }
+    
+    private func saveUsername() {
+        let trimmedUsername = editedUsername.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedUsername.isEmpty else { return }
+        
+        userPreferences.username = trimmedUsername
+        
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        showingSaveConfirmation = true
     }
 }
