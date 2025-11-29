@@ -33,20 +33,13 @@ struct ProfileView: View {
                         ProfileListSection(title: "我的收藏") {
                             ProfileListItem(
                                 icon: "star.fill",
-                                title: "收藏的题目",
+                                title: "成为项网会员",
                                 iconColor: .orange,
-                                badgeCount: 23
                             )
                         }
                         
                         // Settings Section
                         ProfileListSection(title: "设置") {
-                            ProfileListItem(
-                                icon: "bell.fill",
-                                title: "消息通知",
-                                iconColor: .red
-                            )
-                            
                             Divider()
                                 .padding(.leading, 56)
                             
