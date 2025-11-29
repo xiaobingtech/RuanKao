@@ -22,6 +22,7 @@ struct ComprehensiveQuestionPracticeView: View {
     @State private var showExamResult = false
     @State private var isLoading = true
     @State private var startTime: Date = Date()
+    @State private var selectedImage: ImageItem?
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -66,6 +67,12 @@ struct ComprehensiveQuestionPracticeView: View {
         .toolbar(.hidden, for: .tabBar)
         .onAppear {
             loadQuestions()
+        }
+        .fullScreenCover(item: $selectedImage) { item in
+            FullScreenImageView(imageUrl: item.url, isPresented: Binding(
+                get: { selectedImage != nil },
+                set: { if !$0 { selectedImage = nil } }
+            ))
         }
     }
     
@@ -136,6 +143,9 @@ struct ComprehensiveQuestionPracticeView: View {
                             }
                             .frame(maxHeight: 300)
                             .padding(.top, 8)
+                            .onTapGesture {
+                                selectedImage = ImageItem(url: url)
+                            }
                         }
                     }
                     .padding(20)
@@ -294,6 +304,9 @@ struct ComprehensiveQuestionPracticeView: View {
                                 }
                                 .frame(maxHeight: 300)
                                 .padding(.top, 8)
+                                .onTapGesture {
+                                    selectedImage = ImageItem(url: url)
+                                }
                             }
                             
                             Text(question.explanation)

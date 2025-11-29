@@ -14,6 +14,7 @@ struct WrongQuestionPracticeView: View {
     
     @Environment(\.dismiss) var dismiss
     @State private var currentQuestionIndex: Int
+    @State private var selectedImage: ImageItem?
     
     init(wrongQuestions: [WrongQuestion], startIndex: Int) {
         self.wrongQuestions = wrongQuestions
@@ -101,6 +102,9 @@ struct WrongQuestionPracticeView: View {
                             }
                             .frame(maxHeight: 300)
                             .padding(.top, 8)
+                            .onTapGesture {
+                                selectedImage = ImageItem(url: url)
+                            }
                         }
                     }
                     .padding(20)
@@ -243,6 +247,9 @@ struct WrongQuestionPracticeView: View {
                                 }
                                 .frame(maxHeight: 300)
                                 .padding(.top, 8)
+                                .onTapGesture {
+                                    selectedImage = ImageItem(url: url)
+                                }
                             }
                             
                             Text(question.explanation)
@@ -266,6 +273,12 @@ struct WrongQuestionPracticeView: View {
         .navigationTitle("错题练习")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
+        .fullScreenCover(item: $selectedImage) { item in
+            FullScreenImageView(imageUrl: item.url, isPresented: Binding(
+                get: { selectedImage != nil },
+                set: { if !$0 { selectedImage = nil } }
+            ))
+        }
     }
     
     private func previousQuestion() {
