@@ -150,67 +150,38 @@ struct CountdownCard: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
             // Header
             HStack {
                 Image(systemName: "clock.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.3, green: 0.4, blue: 0.9),
-                                Color(red: 0.5, green: 0.3, blue: 0.8)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .font(.system(size: 18))
+                    .foregroundColor(.purple)
                 
                 Text("考试倒计时")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.primary)
                 
                 Spacer()
             }
             
             // Target Date
-            HStack {
-                Text(targetDateText)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(.secondary)
-                
-                Spacer()
-            }
+            Text(targetDateText)
+                .font(.system(size: 13))
+                .foregroundColor(.secondary)
             
             // Countdown Display
-            HStack(spacing: 12) {
-                TimeUnitView(value: days, unit: "天", color: .blue)
-                
-                Text(":")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.secondary)
-                
-                TimeUnitView(value: hours, unit: "时", color: .purple)
-                
-                Text(":")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.secondary)
-                
-                TimeUnitView(value: minutes, unit: "分", color: .orange)
-                
-                Text(":")
-                    .font(.system(size: 28, weight: .bold))
-                    .foregroundColor(.secondary)
-                
-                TimeUnitView(value: seconds, unit: "秒", color: .green)
+            HStack(spacing: 8) {
+                TimeUnitView(value: days, unit: "天", color: Color(red: 0.4, green: 0.7, blue: 1.0))
+                TimeUnitView(value: hours, unit: "时", color: Color(red: 0.8, green: 0.5, blue: 1.0))
+                TimeUnitView(value: minutes, unit: "分", color: Color(red: 1.0, green: 0.7, blue: 0.4))
+                TimeUnitView(value: seconds, unit: "秒", color: Color(red: 0.5, green: 0.9, blue: 0.6))
             }
-            .padding(.vertical, 8)
         }
-        .padding(20)
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
-                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
@@ -222,26 +193,21 @@ struct TimeUnitView: View {
     let color: Color
     
     var body: some View {
-        VStack(spacing: 4) {
-            Text(String(format: "%02d", value))
-                .font(.system(size: 32, weight: .bold, design: .rounded))
+        VStack(spacing: 6) {
+            Text("\(value)")
+                .font(.system(size: 36, weight: .bold, design: .rounded))
                 .foregroundColor(color)
-                .lineLimit(1)
-                .minimumScaleFactor(0.5)
-                .frame(minWidth: 60)
             
             Text(unit)
-                .font(.system(size: 12, weight: .medium))
+                .font(.system(size: 11))
                 .foregroundColor(.secondary)
-                .lineLimit(1)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(color.opacity(0.1))
+            RoundedRectangle(cornerRadius: 8)
+                .fill(color.opacity(0.15))
         )
-        .fixedSize(horizontal: true, vertical: false)
     }
 }
 
@@ -262,44 +228,35 @@ struct StudyStatisticsCard: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 16) {
             // Header
             HStack {
                 Image(systemName: "chart.bar.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.2, green: 0.7, blue: 0.9),
-                                Color(red: 0.3, green: 0.5, blue: 0.8)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
+                    .font(.system(size: 18))
+                    .foregroundColor(.blue)
                 
                 Text("学习统计")
-                    .font(.system(size: 20, weight: .bold))
+                    .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.primary)
                 
                 Spacer()
             }
             
-            // Statistics Grid
+            // Statistics Grid (2 columns)
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
                     StatisticItemView(
                         icon: "checkmark.circle.fill",
                         title: "已练习题目",
                         value: "\(practiceQuestions)",
-                        color: .blue
+                        color: Color(red: 0.4, green: 0.7, blue: 1.0)
                     )
                     
                     StatisticItemView(
                         icon: "chart.line.uptrend.xyaxis",
                         title: "平均正确率",
                         value: String(format: "%.1f%%", averageAccuracy),
-                        color: .green
+                        color: Color(red: 0.5, green: 0.9, blue: 0.6)
                     )
                 }
                 
@@ -308,14 +265,14 @@ struct StudyStatisticsCard: View {
                         icon: "clock.fill",
                         title: "练习时长",
                         value: "\(studyHours)h \(studyMinutes)m",
-                        color: .orange
+                        color: Color(red: 1.0, green: 0.7, blue: 0.4)
                     )
                     
                     StatisticItemView(
                         icon: "doc.text.fill",
                         title: "完成考试",
                         value: "\(completedExams)",
-                        color: .purple
+                        color: Color(red: 0.8, green: 0.5, blue: 1.0)
                     )
                 }
                 
@@ -325,17 +282,17 @@ struct StudyStatisticsCard: View {
                         icon: "exclamationmark.triangle.fill",
                         title: "错题总数",
                         value: "\(errorCount)",
-                        color: .red
+                        color: Color(red: 1.0, green: 0.4, blue: 0.4)
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
             }
         }
-        .padding(20)
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(
-            RoundedRectangle(cornerRadius: 16)
+            RoundedRectangle(cornerRadius: 12)
                 .fill(Color(UIColor.secondarySystemGroupedBackground))
-                .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 4)
         )
     }
 }
@@ -348,32 +305,26 @@ struct StatisticItemView: View {
     let color: Color
     
     var body: some View {
-        VStack(spacing: 12) {
-            HStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(spacing: 6) {
                 Image(systemName: icon)
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.system(size: 14))
                     .foregroundColor(color)
                 
                 Text(title)
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.system(size: 12))
                     .foregroundColor(.secondary)
-                
-                Spacer()
             }
             
-            HStack {
-                Text(value)
-                    .font(.system(size: 24, weight: .bold, design: .rounded))
-                    .foregroundColor(.primary)
-                
-                Spacer()
-            }
+            Text(value)
+                .font(.system(size: 22, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(color.opacity(0.08))
+            RoundedRectangle(cornerRadius: 8)
+                .fill(color.opacity(0.12))
         )
     }
 }
