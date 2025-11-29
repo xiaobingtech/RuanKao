@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import UIKit
 
 struct ProfileView: View {
@@ -314,6 +315,7 @@ struct CourseSwitchCard: View {
 struct EditProfileView: View {
     @ObservedObject var userPreferences: UserPreferences
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     @State private var editedUsername: String = ""
     @State private var showingSaveConfirmation = false
     
@@ -380,7 +382,25 @@ struct EditProfileView: View {
         let trimmedUsername = editedUsername.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedUsername.isEmpty else { return }
         
+        // Update UserDefaults
         userPreferences.username = trimmedUsername
+        
+        // Update SwiftData for iCloud sync
+        if let userId = userPreferences.userId {
+            let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
+            do {
+                let users = try modelContext.fetch(descriptor)
+                if let existingUser = users.first {
+                    existingUser.username = trimmedUsername
+                    try modelContext.save()
+                    print("Updated username in SwiftData: \(trimmedUsername)")
+                } else {
+                    print("Warning: User not found in SwiftData for userId: \(userId)")
+                }
+            } catch {
+                print("Failed to update username in SwiftData: \(error.localizedDescription)")
+            }
+        }
         
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)

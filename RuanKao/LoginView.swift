@@ -79,38 +79,37 @@ struct LoginView: View {
                                     // Get the user ID from Apple Sign-In
                                     let userId = appleIDCredential.user
                                     
-                                    // Generate username: "项网学员" + last 4 digits of user ID
-                                    let lastFourDigits = String(userId.suffix(4))
-                                    let username = "项网学员\(lastFourDigits)"
-                                    
-                                    // Save to UserDefaults
-                                    userPreferences.setUserData(userId: userId, username: username)
-                                    print("Saved user data - User ID: \(userId), Username: \(username)")
-                                    
-                                    // Save to SwiftData for iCloud sync
+                                    // Check if user exists in SwiftData (iCloud)
                                     let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
                                     do {
                                         let users = try modelContext.fetch(descriptor)
+                                        
+                                        let finalUsername: String
                                         if let existingUser = users.first {
-                                            print("User already exists in SwiftData: \(existingUser.userId)")
-                                            // Update username if changed
-                                            if existingUser.username != username {
-                                                existingUser.username = username
-                                                try modelContext.save()
-                                                print("Updated username for existing user")
-                                            }
+                                            // Existing user: use the saved username from SwiftData (may have been modified by user)
+                                            finalUsername = existingUser.username
+                                            print("Existing user found, using saved username: \(finalUsername)")
                                         } else {
-                                            let user = User(userId: userId, username: username)
+                                            // New user: generate default username
+                                            let lastFourDigits = String(userId.suffix(4))
+                                            finalUsername = "项网学员\(lastFourDigits)"
+                                            
+                                            // Save new user to SwiftData
+                                            let user = User(userId: userId, username: finalUsername)
                                             modelContext.insert(user)
                                             try modelContext.save()
-                                            print("New user saved to SwiftData successfully")
+                                            print("New user created with username: \(finalUsername)")
                                         }
+                                        
+                                        // Save to UserDefaults
+                                        userPreferences.setUserData(userId: userId, username: finalUsername)
+                                        print("Saved user data - User ID: \(userId), Username: \(finalUsername)")
+                                        
+                                        // Set login status
+                                        userPreferences.login()
                                     } catch {
                                         print("Failed to handle user data in SwiftData: \(error.localizedDescription)")
                                     }
-                                    
-                                    // Set login status
-                                    userPreferences.login()
                                 }
                                 
                             case .failure(let error):
