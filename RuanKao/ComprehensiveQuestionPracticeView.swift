@@ -88,18 +88,18 @@ struct ComprehensiveQuestionPracticeView: View {
                         
                         Spacer()
                         
-                        if practiceMode == .simulation {
-                            HStack(spacing: 4) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.green)
-                                Text("\(correctCount)")
-                                
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundColor(.red)
-                                Text("\(userAnswers.count - correctCount)")
-                            }
-                            .font(.system(size: 14, weight: .medium))
-                        }
+//                        if practiceMode == .simulation {
+//                            HStack(spacing: 4) {
+//                                Image(systemName: "checkmark.circle.fill")
+//                                    .foregroundColor(.green)
+//                                Text("\(correctCount)")
+//                                
+//                                Image(systemName: "xmark.circle.fill")
+//                                    .foregroundColor(.red)
+//                                Text("\(userAnswers.count - correctCount)")
+//                            }
+//                            .font(.system(size: 14, weight: .medium))
+//                        }
                     }
                     .padding(.horizontal)
                     .padding(.top, 16)
