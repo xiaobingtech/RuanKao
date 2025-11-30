@@ -96,13 +96,13 @@ final class WrongQuestion {
     // Helper to get image URL similar to Question model
     var tiganPicUrl: URL? {
         guard !tiganPic.isEmpty else { return nil }
-        let baseUrl = "https://mp-1af92f1c-94c6-441d-86c3-3a0c66fb0618.cdn.bspapp.com/tiku"
-        return URL(string: "\(baseUrl)/\(courseId)/\(tiganPic)")
+        let baseUrl = "http://static.ruankao.app.xiaobingkj.com/course_\(courseId)"
+        return URL(string: "\(baseUrl)/\(tiganPic)")
     }
     
     var explanationPicUrl: URL? {
         guard !explanationPic.isEmpty else { return nil }
-        let baseUrl = "https://mp-1af92f1c-94c6-441d-86c3-3a0c66fb0618.cdn.bspapp.com/tiku"
-        return URL(string: "\(baseUrl)/\(courseId)/\(explanationPic)")
+        let baseUrl = "http://static.ruankao.app.xiaobingkj.com/course_\(courseId)"
+        return URL(string: "\(baseUrl)/\(explanationPic)")
     }
 }
