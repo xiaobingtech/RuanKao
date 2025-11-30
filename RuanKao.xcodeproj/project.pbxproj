@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCD2EDBDC13006276F5 /* RevenueCat */; };
 		CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */; };
+		CB6D3FD32EDC066C006276F5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FD22EDC066C006276F5 /* FirebaseAnalytics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			files = (
 				CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */,
 				CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */,
+				CB6D3FD32EDC066C006276F5 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				CB6D3FCD2EDBDC13006276F5 /* RevenueCat */,
 				CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */,
+				CB6D3FD22EDC066C006276F5 /* FirebaseAnalytics */,
 			);
 			productName = RuanKao;
 			productReference = CB2540612ED31F5E0046A9FD /* RuanKao.app */;
@@ -118,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+				CB6D3FD12EDC066C006276F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB2540622ED31F5E0046A9FD /* Products */;
@@ -377,6 +381,14 @@
 				minimumVersion = 5.49.2;
 			};
 		};
+		CB6D3FD12EDC066C006276F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -389,6 +401,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
 			productName = RevenueCatUI;
+		};
+		CB6D3FD22EDC066C006276F5 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB6D3FD12EDC066C006276F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
