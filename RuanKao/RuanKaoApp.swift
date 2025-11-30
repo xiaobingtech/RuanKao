@@ -7,9 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import RevenueCat
 
 @main
 struct RuanKaoApp: App {
+    init() {
+            Purchases.configure(withAPIKey: "test_YSwOwkZCyqduYrinjAeoiBUPiSW")
+        }
     var body: some Scene {
         WindowGroup {
             AppRootView()

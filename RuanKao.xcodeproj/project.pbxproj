@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCD2EDBDC13006276F5 /* RevenueCat */; };
+		CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		CB2540612ED31F5E0046A9FD /* RuanKao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RuanKao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +41,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */,
+				CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +85,8 @@
 			);
 			name = RuanKao;
 			packageProductDependencies = (
+				CB6D3FCD2EDBDC13006276F5 /* RevenueCat */,
+				CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */,
 			);
 			productName = RuanKao;
 			productReference = CB2540612ED31F5E0046A9FD /* RuanKao.app */;
@@ -107,6 +116,9 @@
 			);
 			mainGroup = CB2540582ED31F5E0046A9FD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB2540622ED31F5E0046A9FD /* Products */;
 			projectDirPath = "";
@@ -355,6 +367,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.49.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CB6D3FCD2EDBDC13006276F5 /* RevenueCat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCat;
+		};
+		CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
+			productName = RevenueCatUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CB2540592ED31F5E0046A9FD /* Project object */;
 }
