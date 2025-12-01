@@ -106,8 +106,8 @@ struct LoginView: View {
                                     // Use Task to handle async operations and ensure CloudKit is ready
                                     Task { @MainActor in
                                         // Add delay to ensure CloudKit/SwiftData initialization completes
-                                        // Increased from 0.5s to 1.0s for more reliable fresh install behavior
-                                        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1.0 seconds
+                                        // Increased to 2.0s to ensure reliable fresh install behavior
+                                        try? await Task.sleep(nanoseconds: 2_000_000_000) // 2.0 seconds
                                         
                                         // Check if user exists in SwiftData (iCloud)
                                         let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
