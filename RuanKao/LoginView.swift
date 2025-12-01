@@ -105,8 +105,9 @@ struct LoginView: View {
                                     
                                     // Use Task to handle async operations and ensure CloudKit is ready
                                     Task { @MainActor in
-                                        // Add small delay to ensure CloudKit initialization completes
-                                        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                                        // Add delay to ensure CloudKit/SwiftData initialization completes
+                                        // Increased from 0.5s to 1.0s for more reliable fresh install behavior
+                                        try? await Task.sleep(nanoseconds: 1_000_000_000) // 1.0 seconds
                                         
                                         // Check if user exists in SwiftData (iCloud)
                                         let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
@@ -123,11 +124,18 @@ struct LoginView: View {
                                                 let lastFourDigits = String(userId.suffix(4))
                                                 finalUsername = "项网学员\(lastFourDigits)"
                                                 
-                                                // Save new user to SwiftData
+                                                // Save new user to SwiftData with error handling
                                                 let user = User(userId: userId, username: finalUsername)
                                                 modelContext.insert(user)
-                                                try modelContext.save()
-                                                print("New user created with username: \(finalUsername)")
+                                                
+                                                do {
+                                                    try modelContext.save()
+                                                    print("✅ New user created and saved: \(finalUsername)")
+                                                } catch {
+                                                    print("⚠️ Failed to save new user to SwiftData: \(error.localizedDescription)")
+                                                    print("   Continuing with in-memory user data")
+                                                    // Don't throw - continue with user data in UserDefaults
+                                                }
                                             }
                                             
                                             // Save to UserDefaults
