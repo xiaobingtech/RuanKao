@@ -103,36 +103,49 @@ struct LoginView: View {
                                     // Get the user ID from Apple Sign-In
                                     let userId = appleIDCredential.user
                                     
-                                    // Check if user exists in SwiftData (iCloud)
-                                    let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
-                                    do {
-                                        let users = try modelContext.fetch(descriptor)
+                                    // Use Task to handle async operations and ensure CloudKit is ready
+                                    Task { @MainActor in
+                                        // Add small delay to ensure CloudKit initialization completes
+                                        try? await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
                                         
-                                        let finalUsername: String
-                                        if let existingUser = users.first {
-                                            // Existing user: use the saved username from SwiftData (may have been modified by user)
-                                            finalUsername = existingUser.username
-                                            print("Existing user found, using saved username: \(finalUsername)")
-                                        } else {
-                                            // New user: generate default username
-                                            let lastFourDigits = String(userId.suffix(4))
-                                            finalUsername = "项网学员\(lastFourDigits)"
+                                        // Check if user exists in SwiftData (iCloud)
+                                        let descriptor = FetchDescriptor<User>(predicate: #Predicate { $0.userId == userId })
+                                        do {
+                                            let users = try modelContext.fetch(descriptor)
                                             
-                                            // Save new user to SwiftData
-                                            let user = User(userId: userId, username: finalUsername)
-                                            modelContext.insert(user)
-                                            try modelContext.save()
-                                            print("New user created with username: \(finalUsername)")
+                                            let finalUsername: String
+                                            if let existingUser = users.first {
+                                                // Existing user: use the saved username from SwiftData (may have been modified by user)
+                                                finalUsername = existingUser.username
+                                                print("Existing user found, using saved username: \(finalUsername)")
+                                            } else {
+                                                // New user: generate default username
+                                                let lastFourDigits = String(userId.suffix(4))
+                                                finalUsername = "项网学员\(lastFourDigits)"
+                                                
+                                                // Save new user to SwiftData
+                                                let user = User(userId: userId, username: finalUsername)
+                                                modelContext.insert(user)
+                                                try modelContext.save()
+                                                print("New user created with username: \(finalUsername)")
+                                            }
+                                            
+                                            // Save to UserDefaults
+                                            userPreferences.setUserData(userId: userId, username: finalUsername)
+                                            print("Saved user data - User ID: \(userId), Username: \(finalUsername)")
+                                            
+                                            // Set login status
+                                            userPreferences.login()
+                                        } catch {
+                                            print("Failed to handle user data in SwiftData: \(error.localizedDescription)")
+                                            
+                                            // Fallback: Save to UserDefaults only
+                                            let lastFourDigits = String(userId.suffix(4))
+                                            let fallbackUsername = "项网学员\(lastFourDigits)"
+                                            userPreferences.setUserData(userId: userId, username: fallbackUsername)
+                                            userPreferences.login()
+                                            print("Using fallback username due to SwiftData error")
                                         }
-                                        
-                                        // Save to UserDefaults
-                                        userPreferences.setUserData(userId: userId, username: finalUsername)
-                                        print("Saved user data - User ID: \(userId), Username: \(finalUsername)")
-                                        
-                                        // Set login status
-                                        userPreferences.login()
-                                    } catch {
-                                        print("Failed to handle user data in SwiftData: \(error.localizedDescription)")
                                     }
                                 }
                                 
