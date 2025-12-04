@@ -13,8 +13,8 @@ import Firebase
 @main
 struct RuanKaoApp: App {
     init() {
-            Purchases.configure(withAPIKey: "test_YSwOwkZCyqduYrinjAeoiBUPiSW")
-        FirebaseApp.configure()
+//            Purchases.configure(withAPIKey: "test_YSwOwkZCyqduYrinjAeoiBUPiSW")
+            FirebaseApp.configure()
         }
     var body: some Scene {
         WindowGroup {
