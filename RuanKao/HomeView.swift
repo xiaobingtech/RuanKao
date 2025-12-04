@@ -38,9 +38,6 @@ struct HomeContentView: View {
     // Model context for creating/updating data
     @Environment(\.modelContext) private var modelContext
     
-    // Safe async initialization of statistics
-    @State private var statistics: StudyStatistics?
-    
     init(courseId: Int) {
         self.courseId = courseId
         
@@ -56,6 +53,20 @@ struct HomeContentView: View {
         self._allStatistics = Query(filter: statsPredicate)
     }
     
+    // Computed property to get or create statistics for current course
+    private var statistics: StudyStatistics {
+        // Find statistics for current course
+        if let existing = allStatistics.first {
+            return existing
+        } else {
+            // Create default statistics for this course if none exist
+            let newStats = StudyStatistics(courseId: courseId)
+            modelContext.insert(newStats)
+            try? modelContext.save()
+            return newStats
+        }
+    }
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -64,12 +75,12 @@ struct HomeContentView: View {
                     .padding(.horizontal)
                     .padding(.top, 8)
                 
-                // Study Statistics Section - use safe defaults if statistics not loaded
+                // Study Statistics Section
                 StudyStatisticsCard(
-                    practiceQuestions: statistics?.practiceQuestions ?? 0,
-                    averageAccuracy: statistics?.averageAccuracy ?? 0.0,
-                    studyDuration: statistics?.studyDuration ?? 0,
-                    completedExams: statistics?.completedExams ?? 0,
+                    practiceQuestions: statistics.practiceQuestions,
+                    averageAccuracy: statistics.averageAccuracy,
+                    studyDuration: statistics.studyDuration,
+                    completedExams: statistics.completedExams,
                     errorCount: wrongQuestions.count
                 )
                 .padding(.horizontal)
@@ -78,32 +89,11 @@ struct HomeContentView: View {
         }
         .background(Color(UIColor.systemGroupedBackground))
         .navigationTitle("首页")
-        .task {
-            // Safely initialize statistics asynchronously after model context is ready
-            await initializeStatistics()
-        }
         .onAppear {
             startTimer()
         }
         .onDisappear {
             stopTimer()
-        }
-    }
-    
-    // Safe async initialization of statistics
-    private func initializeStatistics() async {
-        // Add small delay to ensure CloudKit/SwiftData is fully initialized
-        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
-        
-        // Find statistics for current course
-        if let existing = allStatistics.first {
-            statistics = existing
-        } else {
-            // Create default statistics for this course if none exist
-            let newStats = StudyStatistics(courseId: courseId)
-            modelContext.insert(newStats)
-            try? modelContext.save()
-            statistics = newStats
         }
     }
     
