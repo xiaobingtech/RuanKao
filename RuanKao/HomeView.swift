@@ -93,7 +93,7 @@ struct HomeContentView: View {
     // Safe async initialization of statistics
     private func initializeStatistics() async {
         // Add small delay to ensure CloudKit/SwiftData is fully initialized
-        try? await Task.sleep(nanoseconds: 200_000_000) // 0.2 seconds
+        try? await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds
         
         // Find statistics for current course
         if let existing = allStatistics.first {
