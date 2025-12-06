@@ -8,10 +8,14 @@
 import SwiftUI
 import SwiftData
 import UIKit
+import RevenueCat
+import RevenueCatUI
 
 struct ProfileView: View {
     @StateObject private var userPreferences = UserPreferences.shared
     @State private var showLogoutConfirmation = false
+    
+    @State var displayPaywall = false
     
     var body: some View {
         NavigationStack {
@@ -40,8 +44,11 @@ struct ProfileView: View {
                                 icon: "crown.fill",
                                 title: "成为项网会员",
                                 iconColor: .orange,
-                            )
+                            ).onTapGesture {
+                                displayPaywall = true
+                            }
                         }
+                        
                         
                         // Settings Section
                         ProfileListSection(title: "设置") {
@@ -108,6 +115,10 @@ struct ProfileView: View {
                 }
             } message: {
                 Text("确定要退出登录吗？")
+            }
+            .sheet(isPresented: $displayPaywall) {
+            // We handle scroll views for you, no need to wrap this in a ScrollView
+                PaywallView()
             }
         }
     }

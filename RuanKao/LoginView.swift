@@ -172,7 +172,7 @@ struct LoginView: View {
                                 .font(.system(size: 12))
                                 .foregroundColor(.secondary)
                             
-                            Link("服务条款", destination: URL(string: "https://xiang.app.xiaobingkj.com/service")!)
+                            Link("服务条款", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
                                 .font(.system(size: 12))
                                 .foregroundColor(.blue)
                             
@@ -180,7 +180,7 @@ struct LoginView: View {
                                 .font(.system(size: 12))
                                 .foregroundColor(.secondary)
                             
-                            Link("隐私政策", destination: URL(string: "https://xiang.app.xiaobingkj.com/privacy")!)
+                            Link("隐私政策", destination: URL(string: "https://xiang.app.xiaobingkj.com/privacy.html")!)
                                 .font(.system(size: 12))
                                 .foregroundColor(.blue)
                         }
