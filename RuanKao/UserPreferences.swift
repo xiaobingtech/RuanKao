@@ -48,6 +48,13 @@ class UserPreferences: ObservableObject {
         }
     }
     
+    @Published var avatar: String? {
+        didSet {
+            UserDefaults.standard.set(avatar, forKey: "avatar")
+            UserDefaults.standard.synchronize()
+        }
+    }
+    
     // MARK: - Computed Properties
     var isAdvancedCourse: Bool {
         return selectedCourseId == 3
@@ -79,6 +86,7 @@ class UserPreferences: ObservableObject {
         self.userId = UserDefaults.standard.string(forKey: "userId")
         self.username = UserDefaults.standard.string(forKey: "username")
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
+        self.avatar = UserDefaults.standard.string(forKey: "avatar")
     }
     
     // MARK: - Course Selection
@@ -96,14 +104,16 @@ class UserPreferences: ObservableObject {
     }
     
     // MARK: - User Data
-    func setUserData(userId: String?, username: String?) {
+    func setUserData(userId: String?, username: String?, avatar: String? = nil) {
         self.userId = userId
         self.username = username
+        self.avatar = avatar
     }
     
     func clearUserData() {
         self.userId = nil
         self.username = nil
+        self.avatar = nil
     }
     
     // MARK: - Authentication
@@ -121,5 +131,6 @@ class UserPreferences: ObservableObject {
         self.userId = nil
         self.username = nil
         self.isLoggedIn = false
+        self.avatar = nil
     }
 }

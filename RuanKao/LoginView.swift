@@ -119,7 +119,7 @@ struct LoginView: View {
                                             finalUsername = "项网学员\(lastFourDigits)"
                                             
                                             // Save new user to SwiftData
-                                            let user = User(userId: userId, username: finalUsername)
+                                            let user = User(userId: userId, username: finalUsername, avatar: "")
                                             modelContext.insert(user)
                                             try modelContext.save()
                                             print("New user created with username: \(finalUsername)")

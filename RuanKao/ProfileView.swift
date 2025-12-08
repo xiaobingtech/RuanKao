@@ -24,12 +24,26 @@ struct ProfileView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     // Avatar and Nickname Section
-                    NavigationLink(destination: EditProfileView(userPreferences: userPreferences)) {
-                        ProfileHeaderSection(
-                            userName: userPreferences.username ?? "项网学员"
-                        )
+                    VStack(spacing: 12) {
+                        // Avatar - tappable to edit
+                        NavigationLink(destination: EditAvatarView(userPreferences: userPreferences)) {
+                            ProfileAvatarView(avatarUrl: userPreferences.avatar)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        
+                        // Nickname - tappable to edit
+                        NavigationLink(destination: EditProfileView(userPreferences: userPreferences)) {
+                            HStack(spacing: 4) {
+                                Text(userPreferences.username ?? "项网学员")
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(.primary)
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        .buttonStyle(PlainButtonStyle())
                     }
-                    .buttonStyle(PlainButtonStyle())
                     .padding(.top, 20)
                     .padding(.bottom, 20)
                     
@@ -176,32 +190,74 @@ struct ProfileView: View {
     }
 }
 
-// MARK: - Profile Header Section
+// MARK: - Profile Avatar View
+struct ProfileAvatarView: View {
+    let avatarUrl: String?
+    
+    var body: some View {
+        Group {
+            if let avatarUrlString = avatarUrl,
+               let url = URL(string: avatarUrlString) {
+                // Display avatar from URL
+                AsyncImage(url: url) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    case .failure:
+                        placeholderAvatar
+                    case .empty:
+                        ZStack {
+                            placeholderAvatar
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        }
+                    @unknown default:
+                        placeholderAvatar
+                    }
+                }
+                .frame(width: 80, height: 80)
+                .clipShape(Circle())
+                .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
+            } else {
+                // Default placeholder
+                placeholderAvatar
+                    .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
+            }
+        }
+    }
+    
+    private var placeholderAvatar: some View {
+        ZStack {
+            Circle()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color(red: 0.3, green: 0.4, blue: 0.9),
+                            Color(red: 0.5, green: 0.3, blue: 0.8)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: 80, height: 80)
+            
+            Image(systemName: "person.fill")
+                .font(.system(size: 36, weight: .medium))
+                .foregroundColor(.white)
+        }
+    }
+}
+
+// MARK: - Profile Header Section (Deprecated - kept for reference)
 struct ProfileHeaderSection: View {
     let userName: String
     
     var body: some View {
         VStack(spacing: 16) {
             // Avatar
-            ZStack {
-                Circle()
-                    .fill(
-                        LinearGradient(
-                            colors: [
-                                Color(red: 0.3, green: 0.4, blue: 0.9),
-                                Color(red: 0.5, green: 0.3, blue: 0.8)
-                            ],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(width: 80, height: 80)
-                
-                Image(systemName: "person.fill")
-                    .font(.system(size: 36, weight: .medium))
-                    .foregroundColor(.white)
-            }
-            .shadow(color: Color.black.opacity(0.15), radius: 10, x: 0, y: 5)
+            ProfileAvatarView(avatarUrl: nil)
             
             // Nickname
             Text(userName)
