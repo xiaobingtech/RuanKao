@@ -71,11 +71,40 @@ struct ProfileView: View {
                             Divider()
                                 .padding(.leading, 56)
                             
-                            ProfileListItem(
-                                icon: "info.circle.fill",
-                                title: "关于我们",
-                                iconColor: .gray
-                            )
+                            NavigationLink(destination: AboutUsView()) {
+                                HStack(spacing: 16) {
+                                    // Icon
+                                    ZStack {
+                                        Circle()
+                                            .fill(Color.gray.opacity(0.15))
+                                            .frame(width: 40, height: 40)
+                                        
+                                        Image(systemName: "info.circle.fill")
+                                            .font(.system(size: 18, weight: .semibold))
+                                            .foregroundColor(.gray)
+                                    }
+                                    
+                                    // Title
+                                    Text("关于我们")
+                                        .font(.system(size: 16, weight: .medium))
+                                        .foregroundColor(.primary)
+                                    
+                                    Spacer()
+                                    
+                                    // Chevron
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(.secondary)
+                                }
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 12)
+                                .background(Color(UIColor.secondarySystemGroupedBackground))
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                            
+                            Divider()
+                                .padding(.leading, 56)
+                            
                             // Logout button - using direct HStack to avoid nested button issues
                             HStack(spacing: 16) {
                                 // Icon
