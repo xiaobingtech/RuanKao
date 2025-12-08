@@ -10,10 +10,12 @@ import SwiftData
 import UIKit
 import RevenueCat
 import RevenueCatUI
+import MessageUI
 
 struct ProfileView: View {
     @StateObject private var userPreferences = UserPreferences.shared
     @State private var showLogoutConfirmation = false
+    @State private var showMailCompose = false
     
     @State var displayPaywall = false
     
@@ -60,6 +62,11 @@ struct ProfileView: View {
                                 title: "反馈意见",
                                 iconColor: .blue
                             )
+                            .onTapGesture {
+                                if MFMailComposeViewController.canSendMail() {
+                                    showMailCompose = true
+                                }
+                            }
                             
                             Divider()
                                 .padding(.leading, 56)
@@ -119,6 +126,13 @@ struct ProfileView: View {
             .sheet(isPresented: $displayPaywall) {
             // We handle scroll views for you, no need to wrap this in a ScrollView
                 PaywallView()
+            }
+            .sheet(isPresented: $showMailCompose) {
+                MailComposeView(
+                    recipient: "fandong@xiaobingkj.com",
+                    subject: "项网反馈意见",
+                    body: "\n\n---\n设备信息：\(UIDevice.current.model) / iOS \(UIDevice.current.systemVersion)"
+                )
             }
         }
     }
@@ -418,5 +432,41 @@ struct EditProfileView: View {
         generator.notificationOccurred(.success)
         
         showingSaveConfirmation = true
+    }
+}
+
+// MARK: - Mail Compose View
+struct MailComposeView: UIViewControllerRepresentable {
+    @Environment(\.dismiss) private var dismiss
+    
+    let recipient: String
+    let subject: String
+    let body: String
+    
+    func makeUIViewController(context: Context) -> MFMailComposeViewController {
+        let mailComposer = MFMailComposeViewController()
+        mailComposer.mailComposeDelegate = context.coordinator
+        mailComposer.setToRecipients([recipient])
+        mailComposer.setSubject(subject)
+        mailComposer.setMessageBody(body, isHTML: false)
+        return mailComposer
+    }
+    
+    func updateUIViewController(_ uiViewController: MFMailComposeViewController, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, MFMailComposeViewControllerDelegate {
+        let parent: MailComposeView
+        
+        init(_ parent: MailComposeView) {
+            self.parent = parent
+        }
+        
+        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            parent.dismiss()
+        }
     }
 }
