@@ -77,9 +77,9 @@ struct ProfileView: View {
                                 iconColor: .blue
                             )
                             .onTapGesture {
-                                if MFMailComposeViewController.canSendMail() {
+//                                if MFMailComposeViewController.canSendMail() {
                                     showMailCompose = true
-                                }
+//                                }
                             }
                             
                             Divider()

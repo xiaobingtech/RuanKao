@@ -105,13 +105,7 @@ struct EssayPracticeView: View {
                                 selectedImage = ImageItem(url: url)
                             }
                         }
-                        HStack {
-                            Image(systemName: "doc.text.fill")
-                                .foregroundColor(Color(red: 0.4, green: 0.35, blue: 0.85))
-                            Text("题干")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(.primary)
-                        }
+
                         
                         Text(question.tigan)
                             .font(.system(size: 15, weight: .regular))
