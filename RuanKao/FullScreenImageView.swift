@@ -131,7 +131,7 @@ struct ZoomableImageView: UIViewRepresentable {
             
             scrollView.minimumZoomScale = minScale
             scrollView.zoomScale = minScale
-            scrollView.maximumZoomScale = max(minScale * 5, 5.0)
+            scrollView.maximumZoomScale = max(minScale * 2, 2.0)
         }
         
         @objc func handleDoubleTap(_ gesture: UITapGestureRecognizer) {
