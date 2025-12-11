@@ -16,6 +16,7 @@ struct ProfileView: View {
     @StateObject private var userPreferences = UserPreferences.shared
     @State private var showLogoutConfirmation = false
     @State private var showMailCompose = false
+    @State private var showMailErrorAlert = false
     
     @State var displayPaywall = false
     
@@ -77,9 +78,11 @@ struct ProfileView: View {
                                 iconColor: .blue
                             )
                             .onTapGesture {
-//                                if MFMailComposeViewController.canSendMail() {
+                                if MFMailComposeViewController.canSendMail() {
                                     showMailCompose = true
-//                                }
+                                } else {
+                                    showMailErrorAlert = true
+                                }
                             }
                             
                             Divider()
@@ -176,6 +179,11 @@ struct ProfileView: View {
                     subject: "项网反馈意见",
                     body: "\n\n---\n设备信息：\(UIDevice.current.model) / iOS \(UIDevice.current.systemVersion)"
                 )
+            }
+            .alert("无法发送邮件", isPresented: $showMailErrorAlert) {
+                Button("确定", role: .cancel) { }
+            } message: {
+                Text("请先在“设置”中配置邮件账户")
             }
         }
     }
