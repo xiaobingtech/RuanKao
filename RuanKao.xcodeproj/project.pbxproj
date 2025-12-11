@@ -10,6 +10,7 @@
 		CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCD2EDBDC13006276F5 /* RevenueCat */; };
 		CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */; };
 		CB6D3FD32EDC066C006276F5 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CB6D3FD22EDC066C006276F5 /* FirebaseAnalytics */; };
+		CB8F23732EEB072E00A4410A /* DeviceKit in Frameworks */ = {isa = PBXBuildFile; productRef = CB8F23722EEB072E00A4410A /* DeviceKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB6D3FD02EDBDC13006276F5 /* RevenueCatUI in Frameworks */,
+				CB8F23732EEB072E00A4410A /* DeviceKit in Frameworks */,
 				CB6D3FCE2EDBDC13006276F5 /* RevenueCat in Frameworks */,
 				CB6D3FD32EDC066C006276F5 /* FirebaseAnalytics in Frameworks */,
 			);
@@ -90,6 +92,7 @@
 				CB6D3FCD2EDBDC13006276F5 /* RevenueCat */,
 				CB6D3FCF2EDBDC13006276F5 /* RevenueCatUI */,
 				CB6D3FD22EDC066C006276F5 /* FirebaseAnalytics */,
+				CB8F23722EEB072E00A4410A /* DeviceKit */,
 			);
 			productName = RuanKao;
 			productReference = CB2540612ED31F5E0046A9FD /* RuanKao.app */;
@@ -122,6 +125,7 @@
 			packageReferences = (
 				CB6D3FCC2EDBDC13006276F5 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 				CB6D3FD12EDC066C006276F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CB8F23712EEB072E00A4410A /* XCRemoteSwiftPackageReference "DeviceKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CB2540622ED31F5E0046A9FD /* Products */;
@@ -389,6 +393,14 @@
 				minimumVersion = 12.6.0;
 			};
 		};
+		CB8F23712EEB072E00A4410A /* XCRemoteSwiftPackageReference "DeviceKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devicekit/DeviceKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -406,6 +418,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CB6D3FD12EDC066C006276F5 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalytics;
+		};
+		CB8F23722EEB072E00A4410A /* DeviceKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CB8F23712EEB072E00A4410A /* XCRemoteSwiftPackageReference "DeviceKit" */;
+			productName = DeviceKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

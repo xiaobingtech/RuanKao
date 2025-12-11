@@ -11,6 +11,7 @@ import UIKit
 import RevenueCat
 import RevenueCatUI
 import MessageUI
+import DeviceKit
 
 struct ProfileView: View {
     @StateObject private var userPreferences = UserPreferences.shared
@@ -61,9 +62,10 @@ struct ProfileView: View {
                                 icon: "crown.fill",
                                 title: "成为项网会员",
                                 iconColor: .orange,
-                            ).onTapGesture {
-                                displayPaywall = true
-                            }
+                                action: {
+                                    displayPaywall = true
+                                }
+                            )
                         }
                         
                         
@@ -75,15 +77,15 @@ struct ProfileView: View {
                             ProfileListItem(
                                 icon: "envelope.fill",
                                 title: "反馈意见",
-                                iconColor: .blue
-                            )
-                            .onTapGesture {
-                                if MFMailComposeViewController.canSendMail() {
-                                    showMailCompose = true
-                                } else {
-                                    showMailErrorAlert = true
+                                iconColor: .blue,
+                                action: {
+                                    if MFMailComposeViewController.canSendMail() {
+                                        showMailCompose = true
+                                    } else {
+                                        showMailErrorAlert = true
+                                    }
                                 }
-                            }
+                            )
                             
                             Divider()
                                 .padding(.leading, 56)
@@ -177,7 +179,7 @@ struct ProfileView: View {
                 MailComposeView(
                     recipient: "fandong@xiaobingkj.com",
                     subject: "项网反馈意见",
-                    body: "\n\n---\n设备信息：\(UIDevice.current.model) / iOS \(UIDevice.current.systemVersion)"
+                    body: "\n设备信息：\(Device.current.safeDescription) / iOS \(UIDevice.current.systemVersion)"
                 )
             }
             .alert("无法发送邮件", isPresented: $showMailErrorAlert) {
@@ -313,13 +315,26 @@ struct ProfileListItem: View {
     let title: String
     let iconColor: Color
     var badgeCount: Int? = nil
+    let action: () -> Void
     
     @State private var isPressed = false
     
+    init(
+        icon: String,
+        title: String,
+        iconColor: Color,
+        badgeCount: Int? = nil,
+        action: @escaping () -> Void = {}
+    ) {
+        self.icon = icon
+        self.title = title
+        self.iconColor = iconColor
+        self.badgeCount = badgeCount
+        self.action = action
+    }
+    
     var body: some View {
-        Button(action: {
-            // Handle navigation
-        }) {
+        Button(action: action) {
             HStack(spacing: 16) {
                 // Icon
                 ZStack {
