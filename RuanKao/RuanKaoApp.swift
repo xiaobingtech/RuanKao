@@ -13,7 +13,7 @@ import Firebase
 @main
 struct RuanKaoApp: App {
     init() {
-            Purchases.configure(withAPIKey: "appl_zIaHsxwoBijSDqiLpgXnbwPtChS")
+            Purchases.configure(withAPIKey: "test_VjQehAaXggenxFHxkPWazhOdmVQ")
             FirebaseApp.configure()
         }
     var body: some Scene {
