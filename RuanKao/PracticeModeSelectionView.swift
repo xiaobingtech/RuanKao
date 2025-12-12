@@ -37,7 +37,6 @@ struct PracticeModeSelectionView: View {
     @Environment(\.dismiss) var dismiss
     @State private var selectedGroup: Int?
     @State private var selectedMode: PracticeMode?
-    @State private var navigateToQuestions = false
     
     var isConfirmEnabled: Bool {
         selectedGroup != nil && selectedMode != nil
@@ -110,11 +109,17 @@ struct PracticeModeSelectionView: View {
                     .padding(.horizontal)
                     
                     // Confirm Button
-                    Button(action: {
-                        if isConfirmEnabled {
-                            navigateToQuestions = true
+                    NavigationLink(
+                        destination: Group {
+                            if let group = selectedGroup, let mode = selectedMode {
+                                QuestionPracticeView(
+                                    chapter: chapter,
+                                    groupNumber: group,
+                                    practiceMode: mode
+                                )
+                            }
                         }
-                    }) {
+                    ) {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
                                 .font(.system(size: 18, weight: .semibold))
@@ -151,15 +156,6 @@ struct PracticeModeSelectionView: View {
         .navigationTitle("练习设置")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
-        .navigationDestination(isPresented: $navigateToQuestions) {
-            if let group = selectedGroup, let mode = selectedMode {
-                QuestionPracticeView(
-                    chapter: chapter,
-                    groupNumber: group,
-                    practiceMode: mode
-                )
-            }
-        }
     }
 
 }
