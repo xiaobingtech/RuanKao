@@ -23,6 +23,7 @@ struct ComprehensiveQuestionPracticeView: View {
     @State private var isLoading = true
     @State private var startTime: Date = Date()
     @State private var selectedImage: ImageItem?
+    @State private var hasLoadedQuestions = false
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -65,8 +66,8 @@ struct ComprehensiveQuestionPracticeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(showExamResult)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            loadQuestions()
+        .task {
+            await loadQuestionsIfNeeded()
         }
         .fullScreenCover(item: $selectedImage) { item in
             FullScreenImageView(imageUrl: item.url, isPresented: Binding(
@@ -330,17 +331,26 @@ struct ComprehensiveQuestionPracticeView: View {
         .background(Color(UIColor.systemGroupedBackground))
     }
     
-    private func loadQuestions() {
-        questions = ExamPaperHelper.loadQuestions(
-            courseId: courseId,
-            category: .comprehensive,
-            year: year,
-            batch: batch
-        )
+    @MainActor
+    private func loadQuestionsIfNeeded() async {
+        guard !hasLoadedQuestions else { return }
+        hasLoadedQuestions = true
         
-        startTime = Date() // Reset start time when questions are loaded
+        isLoading = true
+        do {
+            let loaded = try await QuestionLoader.shared.loadExamQuestions(
+                courseId: courseId,
+                category: .comprehensive,
+                year: year,
+                batch: batch
+            )
+            self.questions = loaded
+            self.startTime = Date()
+            print("Loaded \(questions.count) comprehensive questions")
+        } catch {
+            print("Error loading comprehensive questions: \(error)")
+        }
         isLoading = false
-        print("Loaded \(questions.count) comprehensive questions")
     }
     
     private func selectAnswer(questionId: String, answer: String) {

@@ -124,6 +124,7 @@ struct QuestionPracticeView: View {
     @State private var isLoading = true
     @State private var startTime: Date = Date()
     @State private var selectedImage: ImageItem?
+    @State private var hasLoadedQuestions = false
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -166,8 +167,8 @@ struct QuestionPracticeView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(showExamResult)
         .toolbar(.hidden, for: .tabBar)
-        .onAppear {
-            loadQuestions()
+        .task {
+            await loadQuestionsIfNeeded()
         }
         .fullScreenCover(item: $selectedImage) { item in
             FullScreenImageView(imageUrl: item.url, isPresented: Binding(
@@ -431,43 +432,32 @@ struct QuestionPracticeView: View {
         .background(Color(UIColor.systemGroupedBackground))
     }
     
-    private func loadQuestions() {
+    @MainActor
+    private func loadQuestionsIfNeeded() async {
+        // iOS17 下某些导航/布局情况下可能重复触发任务；加保护避免反复解码导致 CPU/内存异常
+        guard !hasLoadedQuestions else { return }
+        hasLoadedQuestions = true
+        
         guard let courseId = UserPreferences.shared.selectedCourseId else {
             print("No course selected")
             isLoading = false
             return
         }
         
-        let courseName = courseId == 3 ? "高项" : "中项"
-        let fileName = "第\(convertNumberToChinese(groupNumber))组"
-        let filePath = "/杨老师题库/\(courseName)/分章题库/\(chapter.name)/\(fileName).json"
-        
-        guard let bundle = Bundle.main.path(forResource: "Question", ofType: "bundle"),
-              let questionBundle = Bundle(path: bundle) else {
-            print("Cannot find Question.bundle")
-            isLoading = false
-            return
-        }
-        
-        guard let resourcePath = questionBundle.resourcePath else {
-            print("Cannot get resource path")
-            isLoading = false
-            return
-        }
-        
-        let fullPath = "\(resourcePath)\(filePath)"
-        
+        isLoading = true
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: fullPath))
-            let response = try JSONDecoder().decode(QuestionResponse.self, from: data)
-            self.questions = response.data.data
-            self.startTime = Date() // Reset start time when questions are loaded
-            isLoading = false
+            let loaded = try await QuestionLoader.shared.loadChapterQuestions(
+                courseId: courseId,
+                chapterName: chapter.name,
+                groupNumber: groupNumber
+            )
+            self.questions = loaded
+            self.startTime = Date()
             print("Loaded \(questions.count) questions")
         } catch {
             print("Error loading questions: \(error)")
-            isLoading = false
         }
+        isLoading = false
     }
     
     private func selectAnswer(questionId: String, answer: String) {
@@ -509,12 +499,7 @@ struct QuestionPracticeView: View {
         return wrongQuestions
     }
     
-    private func convertNumberToChinese(_ number: Int) -> String {
-        let chineseNumbers = ["一", "二", "三", "四", "五", "六", "七", "八", "九", "十",
-                              "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十"]
-        guard number > 0, number <= chineseNumbers.count else { return "\(number)" }
-        return chineseNumbers[number - 1]
-    }
+    // convertNumberToChinese 已迁移到 QuestionLoader.swift 的 ChineseNumber，避免多处重复实现
 }
 
 // MARK: - Option Button
