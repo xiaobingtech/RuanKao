@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PracticeMode: String, CaseIterable, Identifiable, Hashable {
+enum PracticeMode: String, CaseIterable, Identifiable, Hashable, Codable {
     case simulation = "模拟考试"
     case memorization = "背题模式"
     

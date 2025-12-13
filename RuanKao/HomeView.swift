@@ -116,9 +116,11 @@ struct HomeContentView: View {
         // 中项: courseId = 4, 目标日期 2026年11月9日
         // 高项: courseId = 3, 目标日期 2026年5月24日
         let (year, month, day) = courseId == 4 ? (2026, 11, 9) : (2026, 5, 24)
-        let targetDate = Calendar.current.date(from: DateComponents(year: year, month: month, day: day, hour: 0, minute: 0))!
-        let now = Date()
-        timeRemaining = targetDate.timeIntervalSince(now)
+        guard let targetDate = Calendar.current.date(from: DateComponents(year: year, month: month, day: day, hour: 0, minute: 0)) else {
+            timeRemaining = 0
+            return
+        }
+        timeRemaining = targetDate.timeIntervalSince(Date())
     }
 }
 

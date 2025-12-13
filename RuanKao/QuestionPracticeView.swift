@@ -160,7 +160,7 @@ struct QuestionPracticeView: View {
                     onDismiss: {
                         // 回到“带 TabBar 的题库根页面”
                         router.selectedTab = .questionBank
-                        router.questionBankPath = NavigationPath()
+                        router.questionBankPath = []
                     }
                 )
             } else {

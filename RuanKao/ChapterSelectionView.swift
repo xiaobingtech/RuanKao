@@ -160,7 +160,7 @@ struct ChapterSelectionView: View {
 }
 
 // MARK: - Chapter Info Model
-struct ChapterInfo: Identifiable, Hashable {
+struct ChapterInfo: Identifiable, Hashable, Codable {
     var id: String { path }
     let name: String
     let questionGroupCount: Int
