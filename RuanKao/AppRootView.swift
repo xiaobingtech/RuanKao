@@ -22,9 +22,10 @@ struct AppRootView: View {
             } else {
                 // User logged in and has selected a course - show main app
                 MainTabView()
-                    .environmentObject(router)
             }
         }
+        // 确保所有分支（包括 CourseSelectionView 的 fullScreenCover）都能拿到同一个 TabRouter
+        .environmentObject(router)
     }
 }
 
