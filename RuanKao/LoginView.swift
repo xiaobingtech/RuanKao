@@ -172,17 +172,29 @@ struct LoginView: View {
                                 .font(.system(size: 12))
                                 .foregroundColor(.secondary)
                             
-                            Link("服务条款", destination: URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!)
-                                .font(.system(size: 12))
-                                .foregroundColor(.blue)
+                            if let url = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/") {
+                                Link("服务条款", destination: url)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.blue)
+                            } else {
+                                Text("服务条款")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.blue)
+                            }
                             
                             Text("和")
                                 .font(.system(size: 12))
                                 .foregroundColor(.secondary)
                             
-                            Link("隐私政策", destination: URL(string: "https://xiang.app.xiaobingkj.com/privacy.html")!)
-                                .font(.system(size: 12))
-                                .foregroundColor(.blue)
+                            if let url = URL(string: "https://xiang.app.xiaobingkj.com/privacy.html") {
+                                Link("隐私政策", destination: url)
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.blue)
+                            } else {
+                                Text("隐私政策")
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.blue)
+                            }
                         }
                     }
                     .multilineTextAlignment(.center)

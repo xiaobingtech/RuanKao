@@ -51,7 +51,12 @@ class S3UploadService {
     }
     
     private func performUpload(data: Data, fileName: String, contentType: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let url = URL(string: "\(endpoint)/\(bucket)/\(fileName)")!
+        guard let url = URL(string: "\(endpoint)/\(bucket)/\(fileName)") else {
+            DispatchQueue.main.async {
+                completion(.failure(S3UploadError.invalidResponse))
+            }
+            return
+        }
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
         request.httpBody = data
@@ -63,7 +68,13 @@ class S3UploadService {
         
         request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         request.setValue(amzDate, forHTTPHeaderField: "x-amz-date")
-        request.setValue(url.host!, forHTTPHeaderField: "Host")
+        guard let hostHeader = url.host else {
+            DispatchQueue.main.async {
+                completion(.failure(S3UploadError.invalidResponse))
+            }
+            return
+        }
+        request.setValue(hostHeader, forHTTPHeaderField: "Host")
         request.setValue(sha256Hash(data), forHTTPHeaderField: "x-amz-content-sha256")
         
         // Sign request with AWS Signature V4
@@ -97,7 +108,7 @@ class S3UploadService {
         var signedRequest = request
         
         let service = "s3"
-        let host = URL(string: endpoint)!.host!
+        let host = URL(string: endpoint)?.host ?? ""
         
         // Create canonical request
         let canonicalUri = path
@@ -145,7 +156,7 @@ class S3UploadService {
     }
     
     private func getSignatureKey(dateStamp: String, regionName: String, serviceName: String) -> Data {
-        let kSecret = "AWS4\(secretAccessKey)".data(using: .utf8)!
+        let kSecret = "AWS4\(secretAccessKey)".data(using: .utf8) ?? Data()
         let kDate = hmacSHA256(key: kSecret, data: dateStamp)
         let kRegion = hmacSHA256(key: kDate, data: regionName)
         let kService = hmacSHA256(key: kRegion, data: serviceName)
@@ -155,7 +166,7 @@ class S3UploadService {
     
     private func hmacSHA256(key: Data, data: String) -> Data {
         let symmetricKey = SymmetricKey(data: key)
-        let signature = HMAC<SHA256>.authenticationCode(for: data.data(using: .utf8)!, using: symmetricKey)
+        let signature = HMAC<SHA256>.authenticationCode(for: (data.data(using: .utf8) ?? Data()), using: symmetricKey)
         return Data(signature)
     }
     
@@ -165,7 +176,7 @@ class S3UploadService {
     }
     
     private func sha256Hash(_ string: String) -> String {
-        let data = string.data(using: .utf8)!
+        let data = string.data(using: .utf8) ?? Data()
         return sha256Hash(data)
     }
     

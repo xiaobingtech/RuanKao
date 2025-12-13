@@ -7,6 +7,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<!-- 明确声明不支持 Secure State Restoration，避免 iOS 26 上 SwiftUI 触发状态恢复相关断言导致启动崩溃 -->
+	<key>UIApplicationSupportsSecureRestorableState</key>
+	<false/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>
