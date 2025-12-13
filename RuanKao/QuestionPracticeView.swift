@@ -117,6 +117,7 @@ struct QuestionPracticeView: View {
     let practiceMode: PracticeMode
     
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var router: TabRouter
     @State private var questions: [Question] = []
     @State private var currentQuestionIndex: Int = 0
     @State private var userAnswers: [String: String] = [:] // questionId: selectedAnswer
@@ -125,6 +126,7 @@ struct QuestionPracticeView: View {
     @State private var startTime: Date = Date()
     @State private var selectedImage: ImageItem?
     @State private var hasLoadedQuestions = false
+    @State private var wrongQuestionsCache: [(Question, String)] = []
     
     var currentQuestion: Question? {
         guard !questions.isEmpty, currentQuestionIndex < questions.count else { return nil }
@@ -153,10 +155,12 @@ struct QuestionPracticeView: View {
                 ExamResultView(
                     totalQuestions: questions.count,
                     correctCount: correctCount,
-                    wrongQuestions: getWrongQuestions(),
+                    wrongQuestions: wrongQuestionsCache,
                     duration: Date().timeIntervalSince(startTime),
                     onDismiss: {
-                        dismiss()
+                        // 回到“带 TabBar 的题库根页面”
+                        router.selectedTab = .questionBank
+                        router.questionBankPath = NavigationPath()
                     }
                 )
             } else {
@@ -482,6 +486,8 @@ struct QuestionPracticeView: View {
     
     private func finishPractice() {
         if practiceMode == .simulation {
+            // 缓存一份，避免结果页/跳转时反复计算（iOS17 下更容易导致 CPU 拉高）
+            wrongQuestionsCache = getWrongQuestions()
             showExamResult = true
         } else {
             dismiss()
@@ -655,7 +661,10 @@ struct ExamResultView: View {
                 VStack(spacing: 16) {
                     // Wrong Questions Button (if any)
                     if !wrongQuestions.isEmpty {
-                        NavigationLink(destination: WrongQuestionsView(wrongQuestions: wrongQuestions)) {
+                        // 用 destination 闭包实现懒构建，避免 iOS17 下 NavigationLink 预构建导致的高 CPU/内存抖动
+                        NavigationLink {
+                            WrongQuestionsView(wrongQuestions: wrongQuestions)
+                        } label: {
                             HStack {
                                 Image(systemName: "exclamationmark.triangle.fill")
                                     .font(.system(size: 18, weight: .semibold))
@@ -668,6 +677,7 @@ struct ExamResultView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                         }
+                        .buttonStyle(PlainButtonStyle())
                     }
                     
                     // Back to Home Button
@@ -675,7 +685,7 @@ struct ExamResultView: View {
                         HStack {
                             Image(systemName: "house.fill")
                                 .font(.system(size: 18, weight: .semibold))
-                            Text("回到首页")
+                            Text("回到题库")
                                 .font(.system(size: 17, weight: .semibold))
                         }
                         .frame(maxWidth: .infinity)
@@ -712,33 +722,31 @@ struct ExamResultView: View {
         // Update study statistics
         updateStatistics()
         
-        // Save or update wrong questions to SwiftData
-        for (question, userAnswer) in wrongQuestions {
-            // Check if this question already exists
-            let predicate = #Predicate<WrongQuestion> { wrongQuestion in
-                wrongQuestion.questionId == question.id
+        // Save or update wrong questions to SwiftData（批量 fetch + 最后一次 save）
+        do {
+            let questionIds = wrongQuestions.map { $0.0.id }
+            let predicate = #Predicate<WrongQuestion> { existing in
+                questionIds.contains(existing.questionId)
             }
-            
             let descriptor = FetchDescriptor<WrongQuestion>(predicate: predicate)
+            let existingQuestions = try modelContext.fetch(descriptor)
+            var existingById: [String: WrongQuestion] = Dictionary(uniqueKeysWithValues: existingQuestions.map { ($0.questionId, $0) })
             
-            do {
-                let existingQuestions = try modelContext.fetch(descriptor)
-                
-                if let existing = existingQuestions.first {
-                    // Update existing wrong question
+            for (question, userAnswer) in wrongQuestions {
+                if let existing = existingById[question.id] {
                     existing.wrongCount += 1
                     existing.lastWrongDate = Date()
                     existing.userAnswer = userAnswer
                 } else {
-                    // Create new wrong question
                     let wrongQuestion = WrongQuestion(from: question, userAnswer: userAnswer)
                     modelContext.insert(wrongQuestion)
+                    existingById[question.id] = wrongQuestion
                 }
-                
-                try modelContext.save()
-            } catch {
-                print("❌ Error saving wrong question \(question.id): \(error)")
             }
+            
+            try modelContext.save()
+        } catch {
+            print("❌ Error saving wrong questions batch: \(error)")
         }
     }
     
@@ -906,4 +914,5 @@ struct WrongQuestionCard: View {
             practiceMode: .memorization
         )
     }
+    .environmentObject(TabRouter())
 }

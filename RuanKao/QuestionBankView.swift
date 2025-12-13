@@ -50,13 +50,13 @@ class ExamPapersCounter {
 
 struct QuestionBankView: View {
     @StateObject private var userPreferences = UserPreferences.shared
-    @State private var navigateToChapters = false
+    @EnvironmentObject private var router: TabRouter
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $router.questionBankPath) {
             ScrollView {
                 VStack(spacing: 24) {
                     // Chapter-based Question Bank Section
-                    ChapterQuestionBankSection(navigateToChapters: $navigateToChapters)
+                    ChapterQuestionBankSection()
                         .padding(.horizontal)
                         .padding(.top, 8)
                     
@@ -68,8 +68,19 @@ struct QuestionBankView: View {
             }
             .background(Color(UIColor.systemGroupedBackground))
             .navigationTitle("题库")
-            .navigationDestination(isPresented: $navigateToChapters) {
-                ChapterSelectionView()
+            .navigationDestination(for: QuestionBankRoute.self) { route in
+                switch route {
+                case .chapters:
+                    ChapterSelectionView()
+                case .practiceMode(let chapter):
+                    PracticeModeSelectionView(chapter: chapter)
+                case .practice(let session):
+                    QuestionPracticeView(
+                        chapter: session.chapter,
+                        groupNumber: session.groupNumber,
+                        practiceMode: session.mode
+                    )
+                }
             }
         }
     }
@@ -77,7 +88,7 @@ struct QuestionBankView: View {
 
 // MARK: - Chapter Question Bank Section
 struct ChapterQuestionBankSection: View {
-    @Binding var navigateToChapters: Bool
+    @EnvironmentObject private var router: TabRouter
     @StateObject private var userPreferences = UserPreferences.shared
     var body: some View {
         VStack(spacing: 16) {
@@ -131,7 +142,7 @@ struct ChapterQuestionBankSection: View {
             Button(action: {
                 // Check if course is selected
                 if userPreferences.selectedCourseId != nil {
-                    navigateToChapters = true
+                    router.questionBankPath.append(QuestionBankRoute.chapters)
                 } else {
                     print("Please select a course first")
                 }
@@ -398,4 +409,5 @@ struct ExamModuleCard: View {
 
 #Preview {
     QuestionBankView()
+        .environmentObject(TabRouter())
 }

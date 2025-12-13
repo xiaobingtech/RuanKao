@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChapterSelectionView: View {
     @StateObject private var userPreferences = UserPreferences.shared
-    @Environment(\.dismiss) var dismiss
+    @EnvironmentObject private var router: TabRouter
     @State private var chapters: [ChapterInfo] = []
     
     var body: some View {
@@ -55,7 +55,9 @@ struct ChapterSelectionView: View {
                 } else {
                     LazyVStack(spacing: 12) {
                         ForEach(chapters) { chapter in
-                            ChapterCard(chapter: chapter)
+                            ChapterCard(chapter: chapter) {
+                                router.questionBankPath.append(QuestionBankRoute.practiceMode(chapter))
+                            }
                         }
                     }
                     .padding(.horizontal)
@@ -158,8 +160,8 @@ struct ChapterSelectionView: View {
 }
 
 // MARK: - Chapter Info Model
-struct ChapterInfo: Identifiable {
-    let id = UUID()
+struct ChapterInfo: Identifiable, Hashable {
+    var id: String { path }
     let name: String
     let questionGroupCount: Int
     let path: String
@@ -168,10 +170,11 @@ struct ChapterInfo: Identifiable {
 // MARK: - Chapter Card
 struct ChapterCard: View {
     let chapter: ChapterInfo
+    let onTap: () -> Void
     @State private var isPressed = false
     
     var body: some View {
-        NavigationLink(destination: PracticeModeSelectionView(chapter: chapter)) {
+        Button(action: onTap) {
             HStack(spacing: 16) {
                 // Chapter Icon
                 ZStack {
@@ -235,4 +238,5 @@ struct ChapterCard: View {
     NavigationStack {
         ChapterSelectionView()
     }
+    .environmentObject(TabRouter())
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum PracticeMode: String, CaseIterable, Identifiable {
+enum PracticeMode: String, CaseIterable, Identifiable, Hashable {
     case simulation = "模拟考试"
     case memorization = "背题模式"
     
@@ -34,15 +34,9 @@ enum PracticeMode: String, CaseIterable, Identifiable {
 
 struct PracticeModeSelectionView: View {
     let chapter: ChapterInfo
+    @EnvironmentObject private var router: TabRouter
     @State private var selectedGroup: Int?
     @State private var selectedMode: PracticeMode?
-    @State private var route: PracticeRoute?
-    
-    private struct PracticeRoute: Identifiable, Hashable {
-        let groupNumber: Int
-        let mode: PracticeMode
-        var id: String { "\(groupNumber)-\(mode.rawValue)" }
-    }
     
     var isConfirmEnabled: Bool {
         selectedGroup != nil && selectedMode != nil
@@ -117,8 +111,11 @@ struct PracticeModeSelectionView: View {
                     // Confirm Button
                     Button {
                         guard let group = selectedGroup, let mode = selectedMode else { return }
-                        // 用 navigationDestination 做“真正懒推”，避免 iOS17 下 NavigationLink 预构建/反复创建 destination
-                        route = PracticeRoute(groupNumber: group, mode: mode)
+                        router.questionBankPath.append(
+                            QuestionBankRoute.practice(
+                                PracticeSession(chapter: chapter, groupNumber: group, mode: mode)
+                            )
+                        )
                     } label: {
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
@@ -157,13 +154,6 @@ struct PracticeModeSelectionView: View {
         .navigationTitle("练习设置")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
-        .navigationDestination(item: $route) { route in
-            QuestionPracticeView(
-                chapter: chapter,
-                groupNumber: route.groupNumber,
-                practiceMode: route.mode
-            )
-        }
     }
 
 }
@@ -323,4 +313,5 @@ struct ModeSelectionCard: View {
             )
         )
     }
+    .environmentObject(TabRouter())
 }

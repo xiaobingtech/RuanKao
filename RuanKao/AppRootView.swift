@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AppRootView: View {
     @ObservedObject private var userPreferences = UserPreferences.shared
+    @StateObject private var router = TabRouter()
     
     var body: some View {
         Group {
@@ -21,6 +22,7 @@ struct AppRootView: View {
             } else {
                 // User logged in and has selected a course - show main app
                 MainTabView()
+                    .environmentObject(router)
             }
         }
     }
